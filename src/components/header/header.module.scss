@@ -1,0 +1,68 @@
+@import "../../globals/styles/utils";
+
+.menuIcon {
+  a {
+    color: #fff;
+  }
+}
+
+.navList {
+  display: flex;
+  font-size: 1rem;
+
+  a {
+    display: block;
+    padding: 1rem;
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      background-color: teal;
+    }
+  }
+}
+
+%option {
+  padding: 0 0.2rem;
+  font-size: 1.4rem;
+
+  a {
+    display: block;
+    color: #fff;
+    border-radius: 50%;
+    padding: 0.4rem;
+  }
+}
+
+.search {
+  @extend %option;
+}
+
+.phone {
+  @extend %option;
+}
+
+.cart {
+  @extend %option;
+  position: relative;
+}
+
+.itemCount {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  top: -1px;
+  right: 3px;
+  background-color: red;
+  font-size: 0.6rem;
+  text-align: center;
+}
+
+.user {
+  @extend %option;
+}
+
+.icon {
+  display: block;
+}
