@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CollectionItem from "../collection-item/collection-item.component";
 import { useHistory, withRouter } from "react-router-dom";
+import withPagination from "../pagination/withPagination";
 import { sortCollectionsByType } from "./collection.utils";
 
 function Collection({ collection, currency, ...other }) {
@@ -52,4 +53,4 @@ function Collection({ collection, currency, ...other }) {
   );
 }
 
-export default withRouter(Collection);
+export default withRouter(withPagination(Collection));
