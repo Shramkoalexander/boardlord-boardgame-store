@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import CollectionItem from "../collection-item/collection-item.component";
 import { useHistory, withRouter } from "react-router-dom";
 import { sortCollectionsByType } from "./collection.utils";
 
@@ -43,7 +44,7 @@ function Collection({ collection, currency, ...other }) {
       <div className="row no-gutters row-cols-1 row-cols-md-2 row-cols-lg-3 mx-n3">
         {sortedCollection.map((item) => (
           <div className="col p-3" key={item.id}>
-            item
+            <CollectionItem item={item} currency={currency} />
           </div>
         ))}
       </div>
