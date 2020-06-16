@@ -1,0 +1,22 @@
+.searchField {
+  //   padding: 3rem;
+  width: 100%;
+  // flex: 1 1 auto;
+  // color: green;
+
+  &::-webkit-search-cancel-button {
+    visibility: hidden;
+  }
+}
+
+.clearButton {
+  position: absolute;
+  right: 0;
+  background-color: #000;
+  color: #fff;
+  &::after {
+    content: "x";
+    display: block;
+  }
+  // color: red;
+}
