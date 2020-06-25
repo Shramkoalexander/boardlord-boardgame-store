@@ -1,19 +1,28 @@
 import React from "react";
 import Range from "rc-slider/lib/Range";
 import "../..//rc-slider.theme.scss";
+import { connect } from "react-redux";
+import {
+  setDebouncedPriceValues,
+  setPriceValues,
+} from "../../redux/filter/filter.actions";
+import {
+  selectPriceValues,
+  selectPriceLimits,
+} from "../../redux/filter/filter.selectors";
+import { createStructuredSelector } from "reselect";
 
 function MultipleRange({
-  min,
-  max,
   priceValues,
+  priceLimits,
   step,
-  handlePriceChange,
-  handleDebouncedPriceChange,
+  setPriceValues,
+  setDebouncedPriceValues,
 }) {
-  // console.log("===========================================");
-  // console.log("in multirage");
+  console.log("in multirage");
+  const [minPrice, maxPrice] = priceLimits;
 
-  const needDisable = min === -1 || max === -1 || min === max;
+  const needDisable = minPrice === maxPrice;
   const UNDEFINED_CHAR = "--";
 
   return (
@@ -32,23 +41,34 @@ function MultipleRange({
         <Range
           allowCross={false}
           value={priceValues}
-          min={min}
-          max={max}
+          min={minPrice}
+          max={maxPrice}
           step={step ? step : "1"}
-          onChange={(values) => {
-            handlePriceChange(values);
+          onChange={(newPrices) => {
+            setPriceValues(newPrices);
           }}
-          onAfterChange={(values) => {
-            handleDebouncedPriceChange(values);
+          onAfterChange={(newPrices) => {
+            setDebouncedPriceValues(newPrices);
           }}
         />
       )}
       <div className="d-flex  justify-content-between py-1">
-        <div>{needDisable ? UNDEFINED_CHAR : min}</div>
-        <div>{needDisable ? UNDEFINED_CHAR : max}</div>
+        <div>{needDisable ? UNDEFINED_CHAR : minPrice}</div>
+        <div>{needDisable ? UNDEFINED_CHAR : maxPrice}</div>
       </div>
     </>
   );
 }
 
-export default MultipleRange;
+const mapStateToProps = createStructuredSelector({
+  priceValues: selectPriceValues,
+  priceLimits: selectPriceLimits,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setPriceValues: (newPrices) => dispatch(setPriceValues(newPrices)),
+  setDebouncedPriceValues: (newPrices) =>
+    dispatch(setDebouncedPriceValues(newPrices)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MultipleRange);
