@@ -1,41 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { sortCollectionsByType, sortTypeValues } from "./sorting.utils";
-import { useHistory } from "react-router";
-import Sorting from "./sorting.component";
+import React, { useEffect } from "react";
+import { sortCollectionsByType } from "./sorting.utils";
+import { selectSortType } from "../../redux/sorting/sorting.selectors";
+import { connect } from "react-redux";
+import { setShowSorting } from "../../redux/sorting/sorting.actions";
+import { createStructuredSelector } from "reselect";
 
-const withSorting = (WrappedComponent) => ({ collection, ...otherProps }) => {
-  const { POPULAR } = sortTypeValues;
-  const [sortType, setSortType] = useState(POPULAR);
-  const history = useHistory();
-  const sortedCollection = sortCollectionsByType(sortType, collection);
+const withSorting = (WrappedComponent) => {
+  const WithSortingComponent = ({
+    collection,
+    sortType,
+    setShowSorting,
+    ...otherProps
+  }) => {
+    const sortedCollection = sortCollectionsByType(sortType, collection);
 
-  const handleSelectChange = (event) => {
-    setSortType(event.target.value);
+    useEffect(() => {
+      setShowSorting(!!collection.length);
+    }, [collection.length, setShowSorting]);
+
+    return <WrappedComponent collection={sortedCollection} {...otherProps} />;
   };
 
-  useEffect(() => {
-    const unlisten = history.listen(() => {
-      setSortType(POPULAR);
-    });
-
-    return () => {
-      unlisten();
-    };
-  }, [POPULAR, history]);
-  return (
-    <>
-      <div className="w-100">
-        <Sorting
-          sorting={{
-            sortType,
-            handleSelectChange,
-            collectionLength: sortedCollection.length,
-          }}
-        />
-      </div>
-      <WrappedComponent collection={sortedCollection} {...otherProps} />
-    </>
-  );
+  return connect(mapStateToProps, mapDispatchToProps)(WithSortingComponent);
 };
+
+const mapStateToProps = createStructuredSelector({
+  sortType: selectSortType,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setShowSorting: (showSorting) => dispatch(setShowSorting(showSorting)),
+});
 
 export default withSorting;

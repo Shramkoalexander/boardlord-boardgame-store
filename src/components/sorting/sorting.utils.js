@@ -1,3 +1,5 @@
+import { getProperPrice } from "../../redux/shop/shop.utils";
+
 export const sortTypeValues = {
   POPULAR: "popular",
   NAME_ASC: "name-asc",
@@ -44,7 +46,7 @@ export const sortCollectionsByType = (sortType, collection) => {
       break;
     case PRICE_ASC:
       newCollection.sort((a, b) => {
-        if (parseInt(a.price, 10) < parseInt(b.price, 10)) {
+        if (parseInt(getProperPrice(a), 10) < parseInt(getProperPrice(b), 10)) {
           return -1;
         } else {
           return 1;
@@ -53,7 +55,7 @@ export const sortCollectionsByType = (sortType, collection) => {
       break;
     case PRICE_DESC:
       newCollection.sort((a, b) => {
-        if (parseInt(a.price, 10) < parseInt(b.price, 10)) {
+        if (parseInt(getProperPrice(a), 10) < parseInt(getProperPrice(b), 10)) {
           return 1;
         } else {
           return -1;
