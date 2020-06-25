@@ -1,20 +1,41 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import debounce from "lodash.debounce";
 import EscapeOutside from "../escape-outside/escape-outside.component";
 import classes from "./seatch.module.scss";
 import { findCollectionItems } from "./search.utils";
+import { connect } from "react-redux";
+import {
+  selectIsSearchFieldVisible,
+  selectCurrenListItemIndex,
+  selectSearchInput,
+} from "../../redux/search/search.selectors";
+import {
+  hideSearchField,
+  setCurrentListItemIndex,
+  increaseCurrentListItemIndex,
+  decreaseCurrentListItemIndex,
+  setSearchInput,
+} from "../../redux/search/search.actions";
+import { selectCollection } from "../../redux/shop/shop.selectors";
+import { createStructuredSelector } from "reselect";
 
-function Search({ collection, isSearchFieldVisible, onSearchFieldHide }) {
+function Search({
+  collection,
+  isSearchFieldVisible,
+  hideSearchField,
+  currenListItemIndex,
+  setCurrentListItemIndex,
+  increaseCurrentListItemIndex,
+  decreaseCurrentListItemIndex,
+  setSearchInput,
+  searchInput,
+}) {
   const history = useHistory();
 
   const searchFieldElement = useRef();
-  const initialListIndex = -1;
-  const [currenListItemIndex, setCurrentListItemIndex] = useState(
-    initialListIndex
-  );
-  const [searchInput, setSearchInput] = useState("");
+
   const foundCollection =
     searchInput.length > 1 ? findCollectionItems(collection, searchInput) : [];
 
@@ -35,17 +56,13 @@ function Search({ collection, isSearchFieldVisible, onSearchFieldHide }) {
   };
 
   const handleSearchFieldChangeDebounced = debounce((value) => {
-    handleSearchFieldChange(value);
+    setSearchInput(value);
   }, 200);
 
-  const handleSearchFieldChange = (value) => {
-    setSearchInput(value);
-  };
-
-  const handleClearSearch = () => {
+  const handleClearSearch = useCallback(() => {
     setSearchInput("");
     if (searchFieldElement.current) searchFieldElement.current.value = "";
-  };
+  }, [setSearchInput]);
 
   const handleSearch = () => {
     if (foundCollection[currenListItemIndex]) {
@@ -62,11 +79,7 @@ function Search({ collection, isSearchFieldVisible, onSearchFieldHide }) {
     !isSearchFieldVisible
       ? handleClearSearch()
       : searchFieldElement.current.focus();
-  }, [isSearchFieldVisible]);
-
-  useEffect(() => {
-    setCurrentListItemIndex(initialListIndex);
-  }, [initialListIndex, searchInput]); // depends on searchInput also, don't remove
+  }, [handleClearSearch, isSearchFieldVisible]);
 
   useEffect(() => {
     if (foundCollection[currenListItemIndex] && isSearchFieldVisible)
@@ -77,18 +90,18 @@ function Search({ collection, isSearchFieldVisible, onSearchFieldHide }) {
 
   useEffect(() => {
     const unlisten = history.listen(() => {
-      onSearchFieldHide();
+      hideSearchField();
     });
     return () => {
       unlisten((prevState) => {
         return !prevState;
       });
     };
-  }, [history, onSearchFieldHide]);
+  }, [hideSearchField, history]);
 
   return (
     isSearchFieldVisible && (
-      <EscapeOutside onEscapeOutside={onSearchFieldHide}>
+      <EscapeOutside onEscapeOutside={hideSearchField}>
         <div
           className={`container-lg position-absolute ${
             isSearchFieldVisible ? "visible" : "invisible"
@@ -121,9 +134,7 @@ function Search({ collection, isSearchFieldVisible, onSearchFieldHide }) {
                             currenListItemIndex <
                             foundCollection.length - 1
                           ) {
-                            setCurrentListItemIndex((prevState) => {
-                              return prevState + 1;
-                            });
+                            increaseCurrentListItemIndex();
                           } else {
                             setCurrentListItemIndex(0);
                           }
@@ -133,9 +144,7 @@ function Search({ collection, isSearchFieldVisible, onSearchFieldHide }) {
                         if (foundCollection.length > 0) {
                           e.preventDefault();
                           if (currenListItemIndex > 0) {
-                            setCurrentListItemIndex((prevState) => {
-                              return prevState - 1;
-                            });
+                            decreaseCurrentListItemIndex();
                           } else {
                             setCurrentListItemIndex(foundCollection.length - 1);
                           }
@@ -210,4 +219,20 @@ function Search({ collection, isSearchFieldVisible, onSearchFieldHide }) {
   );
 }
 
-export default Search;
+const mapStateToProps = createStructuredSelector({
+  isSearchFieldVisible: selectIsSearchFieldVisible,
+  collection: selectCollection,
+  currenListItemIndex: selectCurrenListItemIndex,
+  searchInput: selectSearchInput,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  hideSearchField: () => dispatch(hideSearchField()),
+  setCurrentListItemIndex: (listItemIndex) =>
+    dispatch(setCurrentListItemIndex(listItemIndex)),
+  increaseCurrentListItemIndex: () => dispatch(increaseCurrentListItemIndex()),
+  decreaseCurrentListItemIndex: () => dispatch(decreaseCurrentListItemIndex()),
+  setSearchInput: (searchInput) => dispatch(setSearchInput(searchInput)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
