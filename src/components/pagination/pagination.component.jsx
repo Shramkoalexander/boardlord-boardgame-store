@@ -1,20 +1,31 @@
 import React from "react";
+import { connect } from "react-redux";
+import { setCurrentPage } from "../../redux/pagination/pagination.actions";
+import {
+  selectItemsPerPage,
+  selectVisiblePageCount,
+  selectCurrentPage,
+  selectItemsCount,
+} from "../../redux/pagination/pagination.selectiors";
+import range from "lodash.range";
+import { createStructuredSelector } from "reselect";
 
 function Pagination({
-  itemsCount,
   itemsPerPage,
   visiblePagesCount,
   currentPage,
-  onPageChanged,
+  setCurrentPage,
+  itemsCount,
 }) {
-  // console.log("itemsCount", itemsCount);
+  const onPageChanged = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const pagesCount = Math.ceil(itemsCount / itemsPerPage);
   const haveInvisiblePages = pagesCount > visiblePagesCount;
 
   let firstVisiblePage = 1;
   let lastVisiblePage = pagesCount;
-  let items = [];
 
   if (haveInvisiblePages) {
     if (
@@ -30,63 +41,72 @@ function Pagination({
     lastVisiblePage = firstVisiblePage + visiblePagesCount - 1;
   }
 
-  for (let i = firstVisiblePage; i <= lastVisiblePage; i++) {
-    items.push([
-      <button
-        className={`px-3 ${currentPage === i ? "bg-dark text-light" : ""}`}
-        key={i}
-        onClick={() => {
-          onPageChanged(i);
-        }}
-      >
-        {i}
-      </button>,
-    ]);
-  }
-
   return (
-    <div
-      className={pagesCount > 1 ? `d-flex justify-content-center` : `d-none`}
-    >
-      <button
-        className={haveInvisiblePages ? "" : "d-none"}
-        onClick={() => {
-          onPageChanged(1);
-        }}
-      >
-        start
-      </button>
+    pagesCount > 1 && (
+      <div className="d-flex justify-content-center">
+        <button
+          className={haveInvisiblePages ? "" : "d-none"}
+          onClick={() => {
+            onPageChanged(1);
+          }}
+        >
+          start
+        </button>
 
-      <button
-        onClick={() => {
-          if (currentPage - 1 > 0) {
-            onPageChanged(currentPage - 1);
-          }
-        }}
-      >
-        prev
-      </button>
-      {items}
-      <button
-        onClick={() => {
-          if (currentPage + 1 <= pagesCount) {
-            onPageChanged(currentPage + 1);
-          }
-        }}
-      >
-        next
-      </button>
+        <button
+          onClick={() => {
+            if (currentPage - 1 > 0) {
+              onPageChanged(currentPage - 1);
+            }
+          }}
+        >
+          prev
+        </button>
+        {range(firstVisiblePage, lastVisiblePage + 1).map((index) => (
+          <button
+            className={`px-3 ${
+              currentPage === index ? "bg-dark text-light" : ""
+            }`}
+            key={index}
+            onClick={() => {
+              onPageChanged(index);
+            }}
+          >
+            {index}
+          </button>
+        ))}
+        <button
+          onClick={() => {
+            if (currentPage + 1 <= pagesCount) {
+              onPageChanged(currentPage + 1);
+            }
+          }}
+        >
+          next
+        </button>
 
-      <button
-        className={haveInvisiblePages ? "" : "d-none"}
-        onClick={() => {
-          onPageChanged(pagesCount);
-        }}
-      >
-        end
-      </button>
-    </div>
+        <button
+          className={haveInvisiblePages ? "" : "d-none"}
+          onClick={() => {
+            onPageChanged(pagesCount);
+          }}
+        >
+          end
+        </button>
+      </div>
+    )
   );
 }
 
-export default Pagination;
+const mapStateToProps = createStructuredSelector({
+  itemsPerPage: selectItemsPerPage,
+  visiblePagesCount: selectVisiblePageCount,
+  currentPage: selectCurrentPage,
+  itemsCount: selectItemsCount,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentPage: (pageNumber) => dispatch(setCurrentPage(pageNumber)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Pagination);

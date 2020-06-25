@@ -1,35 +1,47 @@
-import React, { useState, useEffect } from "react";
-import Pagination from "./pagination.component";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import {
+  selectItemsPerPage,
+  selectVisiblePageCount,
+  selectCurrentPage,
+} from "../../redux/pagination/pagination.selectiors";
+import { setItemsCount } from "../../redux/pagination/pagination.actions";
+import { createStructuredSelector } from "reselect";
 
-const withPaginator = (WrappedComponent) => ({ collection, ...otherProps }) => {
-  const [itemsPerPage] = useState(12);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [visiblePagesCount] = useState(5);
+const withPagination = (WrappedComponent) => {
+  const WithPaginationComponent = ({
+    collection,
+    currentPage,
+    itemsPerPage,
+    setItemsCount,
+    ...otherProps
+  }) => {
+    const firstPageItem = (currentPage - 1) * itemsPerPage;
+    const lastPageItem = currentPage * itemsPerPage;
+    const paginatedCollection = collection.slice(firstPageItem, lastPageItem);
 
-  const firstPageItem = (currentPage - 1) * itemsPerPage;
-  const lastPageItem = currentPage * itemsPerPage;
-  const slicedCollection = collection.slice(firstPageItem, lastPageItem);
+    useEffect(() => {
+      setItemsCount(collection.length);
+    }, [collection.length, setItemsCount]);
 
-  const onPageChanged = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    return (
+      <>
+        <WrappedComponent collection={paginatedCollection} {...otherProps} />
+      </>
+    );
   };
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [collection]);
-
-  return (
-    <>
-      <WrappedComponent collection={slicedCollection} {...otherProps} />
-      <Pagination
-        itemsCount={collection.length}
-        itemsPerPage={itemsPerPage}
-        visiblePagesCount={visiblePagesCount}
-        currentPage={currentPage}
-        onPageChanged={onPageChanged}
-      />
-    </>
-  );
+  return connect(mapStateToProps, mapDispatchToProps)(WithPaginationComponent);
 };
 
-export default withPaginator;
+const mapStateToProps = createStructuredSelector({
+  itemsPerPage: selectItemsPerPage,
+  visiblePagesCount: selectVisiblePageCount,
+  currentPage: selectCurrentPage,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setItemsCount: (itemsCount) => dispatch(setItemsCount(itemsCount)),
+});
+
+export default withPagination;
