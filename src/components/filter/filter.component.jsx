@@ -1,41 +1,50 @@
 import React, { useEffect } from "react";
 import MultipleRange from "../../components/multiple-range/multiple-range.component";
+import { filterValues } from "./filter.utils";
+import { connect } from "react-redux";
+import {
+  resetFilter,
+  setGameTime,
+  setPlayersCount,
+  toggleIsInStock,
+} from "../../redux/filter/filter.actions";
+import {
+  selectGameTime,
+  selectIsInStock,
+  selectPlayersCount,
+  selectDebouncedPriceValues,
+  selectShowFilter,
+  selectItemsFound,
+  selectPriceLimits,
+} from "../../redux/filter/filter.selectors";
 import { useHistory } from "react-router-dom";
-import { filterValues, getPlayersCountArray } from "./filter.utils";
+import range from "lodash.range";
+import { createStructuredSelector } from "reselect";
 
 function Filter({
-  filter: {
-    handleFilterReset,
-    initialFIlterState,
-    handlegameTimeChange,
-    handlePlayersCountChange,
-    handleInStockChange,
-    minPrice,
-    maxPrice,
-    priceValues,
-    handleDebouncedPriceChange,
-    handlePriceChange,
-    gameTime,
-    isInStock,
-    playersCount,
-    itemsFound,
-  },
+  isInStock,
+  gameTime,
+  playersCount,
+  resetFilter,
+  showFilter,
+  setGameTime,
+  toggleIsInStock,
+  setPlayersCount,
+  itemsFound,
 }) {
   const history = useHistory();
 
-  // console.log("in filter");
-
   useEffect(() => {
     const unlisten = history.listen(() => {
-      handleFilterReset(initialFIlterState);
+      resetFilter();
     });
 
     return () => {
       unlisten();
     };
-  }, [handleFilterReset, history, initialFIlterState]);
+  }, [history, resetFilter]);
 
-  return (
+  return showFilter ? (
     <div className="bg-white border p-3">
       <h2 style={{ fontSize: "1.2rem" }}>Время партии</h2>
       <select
@@ -43,15 +52,15 @@ function Filter({
         id="gameTime"
         value={gameTime}
         onChange={(e) => {
-          handlegameTimeChange(e.target.value);
+          setGameTime(e.target.value);
         }}
       >
-        <option value={filterValues.gameTime.undef}>не указано</option>
-        <option value={filterValues.gameTime.short}>короткая</option>
-        <option value={filterValues.gameTime.medium}>средняя</option>
-        <option value={filterValues.gameTime.long}>долгая</option>
-        <option value={filterValues.gameTime.veryLong}>очень долгая</option>
-        <option value={filterValues.gameTime.different}>различная</option>
+        <option value={filterValues.gameTime.UNDEF}>не указано</option>
+        <option value={filterValues.gameTime.SHORT}>короткая</option>
+        <option value={filterValues.gameTime.MEDIUM}>средняя</option>
+        <option value={filterValues.gameTime.LONG}>долгая</option>
+        <option value={filterValues.gameTime.VERY_LONG}>очень долгая</option>
+        <option value={filterValues.gameTime.DIFFERENT}>различная</option>
       </select>
       <h2 style={{ fontSize: "1.2rem" }}>Кол-во игроков</h2>
 
@@ -60,17 +69,17 @@ function Filter({
         id="playersCount"
         value={playersCount}
         onChange={(e) => {
-          handlePlayersCountChange(e.target.value);
+          setPlayersCount(e.target.value);
         }}
       >
-        <option value={filterValues.playersCount.all}>Все</option>
-        {getPlayersCountArray(filterValues.playersCount.count).map((item) => (
+        <option value={filterValues.playersCount.ALL}>Все</option>
+        {range(1, filterValues.playersCount.COUNT).map((item) => (
           <option key={`playerCount-${item}`} value={`${item}`}>
             {item}
           </option>
         ))}
-        <option value={filterValues.playersCount.more}>
-          > {filterValues.playersCount.count}
+        <option value={filterValues.playersCount.MORE}>
+          &gt; {filterValues.playersCount.COUNT}
         </option>
       </select>
       <div className="py-3">
@@ -78,30 +87,43 @@ function Filter({
           type="checkbox"
           checked={isInStock}
           onChange={() => {
-            handleInStockChange(!isInStock);
+            toggleIsInStock();
           }}
         />
         <span>Только товары в наличии</span>
       </div>
       <h1 style={{ fontSize: "1.5rem" }}>Фильтр</h1>
       <h2 style={{ fontSize: "1.2rem" }}>Цена</h2>
-      <MultipleRange
-        min={minPrice}
-        max={maxPrice}
-        handleDebouncedPriceChange={handleDebouncedPriceChange}
-        handlePriceChange={handlePriceChange}
-        priceValues={priceValues}
-      />
+      <MultipleRange />
       <div>Найдено: {itemsFound}</div>
       <button
         onClick={() => {
-          handleFilterReset(initialFIlterState);
+          resetFilter();
         }}
       >
         Сбросить фильтр
       </button>
     </div>
+  ) : (
+    ""
   );
 }
 
-export default Filter;
+const mapStateToProps = createStructuredSelector({
+  gameTime: selectGameTime,
+  isInStock: selectIsInStock,
+  playersCount: selectPlayersCount,
+  priceLimits: selectPriceLimits,
+  debouncedPriceValues: selectDebouncedPriceValues,
+  showFilter: selectShowFilter,
+  itemsFound: selectItemsFound,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  resetFilter: () => dispatch(resetFilter()),
+  toggleIsInStock: () => dispatch(toggleIsInStock()),
+  setGameTime: (gameTime) => dispatch(setGameTime(gameTime)),
+  setPlayersCount: (playersCount) => dispatch(setPlayersCount(playersCount)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
