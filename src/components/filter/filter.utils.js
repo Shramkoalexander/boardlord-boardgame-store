@@ -1,56 +1,50 @@
+import { getProperPrice } from "../../redux/shop/shop.utils";
+
 export const filterValues = {
   gameTime: {
-    undef: "undefined",
-    short: "short",
-    medium: "medium",
-    long: "long",
-    veryLong: "very_long",
-    different: "different",
+    UNDEF: "undefined",
+    SHORT: "short",
+    MEDIUM: "medium",
+    LONG: "long",
+    VERY_LONG: "very_long",
+    DIFFERENT: "different",
   },
   playersCount: {
-    all: "all",
-    count: 8,
-    more: "more",
+    ALL: "all",
+    COUNT: 8,
+    MORE: "more",
   },
-};
-
-export const getPlayersCountArray = (count) => {
-  const countArray = [];
-  for (let i = 1; i <= count; i++) {
-    countArray.push(i);
-  }
-  return countArray;
 };
 
 export const filterGameTime = (collection, gameTime) => {
-  const { short, medium, long, veryLong, different } = filterValues.gameTime;
+  const { SHORT, MEDIUM, LONG, VERY_LONG, DIFFERENT } = filterValues.gameTime;
   let filteredCollection = collection;
   switch (gameTime) {
-    case short:
+    case SHORT:
       filteredCollection = filteredCollection.filter((item) => {
         const average = (item.max_playtime + item.min_playtime) / 2;
         return average <= 45;
       });
       break;
-    case medium:
+    case MEDIUM:
       filteredCollection = filteredCollection.filter((item) => {
         const average = (item.max_playtime + item.min_playtime) / 2;
         return average > 45 && average <= 90;
       });
       break;
-    case long:
+    case LONG:
       filteredCollection = filteredCollection.filter((item) => {
         const average = (item.max_playtime + item.min_playtime) / 2;
         return average > 90 && average <= 120;
       });
       break;
-    case veryLong:
+    case VERY_LONG:
       filteredCollection = filteredCollection.filter((item) => {
         const average = (item.max_playtime + item.min_playtime) / 2;
         return average > 120;
       });
       break;
-    case different:
+    case DIFFERENT:
       filteredCollection = filteredCollection.filter(
         (item) => item.max_playtime - item.min_playtime >= 30
       );
@@ -64,7 +58,7 @@ export const filterGameTime = (collection, gameTime) => {
 
 export const filterPrice = (collection, priceValues) => {
   let filteredCollection = collection.filter((item) => {
-    const ItemPrice = item.discount_pirce ? item.discount_pirce : item.price;
+    const ItemPrice = getProperPrice(item);
     return ItemPrice >= priceValues[0] && ItemPrice <= priceValues[1];
   });
 
@@ -72,7 +66,7 @@ export const filterPrice = (collection, priceValues) => {
 };
 
 export const filterPlayersCount = (collection, playersCount) => {
-  const { more } = filterValues.playersCount;
+  const { MORE } = filterValues.playersCount;
   let filteredCollection = collection;
 
   if (parseInt(playersCount)) {
@@ -81,7 +75,7 @@ export const filterPlayersCount = (collection, playersCount) => {
         item.max_players >= parseInt(playersCount) &&
         parseInt(playersCount) >= item.min_players
     );
-  } else if (playersCount === more) {
+  } else if (playersCount === MORE) {
     filteredCollection = filteredCollection.filter(
       (item) => parseInt(playersCount) > item.max_players
     );
