@@ -1,0 +1,32 @@
+@import "../../globals/styles/utils.scss";
+
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.pageBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+
+  &:hover {
+    background-color: $color-gray;
+  }
+}
+
+.nonCountBtn {
+  @extend .pageBtn;
+}
+
+.pageBtnActive {
+  background-color: $color-gray-light;
+
+  &:hover {
+    background-color: $color-gray-light;
+  }
+}

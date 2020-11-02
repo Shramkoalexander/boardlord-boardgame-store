@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
   selectItemsPerPage,
-  selectVisiblePageCount,
   selectCurrentPage,
 } from "../../redux/pagination/pagination.selectiors";
 import { setItemsCount } from "../../redux/pagination/pagination.actions";
@@ -36,7 +35,6 @@ const withPagination = (WrappedComponent) => {
 
 const mapStateToProps = createStructuredSelector({
   itemsPerPage: selectItemsPerPage,
-  visiblePagesCount: selectVisiblePageCount,
   currentPage: selectCurrentPage,
 });
 

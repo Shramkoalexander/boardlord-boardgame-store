@@ -9,6 +9,9 @@ import {
 } from "../../redux/pagination/pagination.selectiors";
 import range from "lodash.range";
 import { createStructuredSelector } from "reselect";
+import styles from "./pagination.module.scss";
+import { animateScroll as scroll } from "react-scroll";
+import uniqid from "uniqid";
 
 function Pagination({
   itemsPerPage,
@@ -19,15 +22,18 @@ function Pagination({
 }) {
   const onPageChanged = (pageNumber) => {
     setCurrentPage(pageNumber);
+    scroll.scrollToTop({
+      duration: 0,
+    });
   };
 
   const pagesCount = Math.ceil(itemsCount / itemsPerPage);
-  const haveInvisiblePages = pagesCount > visiblePagesCount;
+  const hasInvisiblePages = pagesCount > visiblePagesCount;
 
   let firstVisiblePage = 1;
   let lastVisiblePage = pagesCount;
 
-  if (haveInvisiblePages) {
+  if (hasInvisiblePages) {
     if (
       currentPage >= Math.ceil(visiblePagesCount / 2) &&
       currentPage <= pagesCount - Math.floor(visiblePagesCount / 2)
@@ -43,14 +49,16 @@ function Pagination({
 
   return (
     pagesCount > 1 && (
-      <div className="d-flex justify-content-center">
+      <div className={styles.btnContainer}>
         <button
-          className={haveInvisiblePages ? "" : "d-none"}
+          className={`${styles.nonCountBtn} ${
+            hasInvisiblePages ? "" : "d-none"
+          }`}
           onClick={() => {
             onPageChanged(1);
           }}
         >
-          start
+          <span className="material-icons">first_page</span>
         </button>
 
         <button
@@ -59,15 +67,16 @@ function Pagination({
               onPageChanged(currentPage - 1);
             }
           }}
+          className={styles.nonCountBtn}
         >
-          prev
+          <span className="material-icons">chevron_left</span>
         </button>
         {range(firstVisiblePage, lastVisiblePage + 1).map((index) => (
           <button
-            className={`px-3 ${
-              currentPage === index ? "bg-dark text-light" : ""
+            className={`${styles.pageBtn} ${
+              currentPage === index ? styles.pageBtnActive : ""
             }`}
-            key={index}
+            key={uniqid()}
             onClick={() => {
               onPageChanged(index);
             }}
@@ -81,17 +90,20 @@ function Pagination({
               onPageChanged(currentPage + 1);
             }
           }}
+          className={styles.nonCountBtn}
         >
-          next
+          <span className="material-icons">chevron_right</span>
         </button>
 
         <button
-          className={haveInvisiblePages ? "" : "d-none"}
+          className={`${styles.nonCountBtn} ${
+            hasInvisiblePages ? "" : "d-none"
+          }`}
           onClick={() => {
             onPageChanged(pagesCount);
           }}
         >
-          end
+          <span className="material-icons">last_page</span>
         </button>
       </div>
     )
