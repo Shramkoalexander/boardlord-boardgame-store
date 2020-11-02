@@ -1,0 +1,91 @@
+@import "../../globals/styles/utils";
+
+@mixin outline($borderColor, $textColor: $color-black) {
+  &.outline {
+    background-color: transparent;
+    box-shadow: 0 0 0 1px $borderColor inset;
+    color: $textColor;
+
+    &:hover {
+      color: $textColor;
+    }
+  }
+}
+
+@mixin fullWidth {
+  &.fullWidth {
+    width: 100%;
+  }
+}
+
+%btn {
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  @extend %btn;
+  background-color: $color-main;
+
+  @include outline($color-main);
+  @include fullWidth();
+}
+
+.secondary {
+  @extend %btn;
+  background-color: $color-gray;
+  color: $color-black;
+
+  @include outline($color-gray);
+  @include fullWidth();
+}
+
+.danger {
+  @extend %btn;
+  background-color: $color-danger;
+  color: #fff;
+  &:hover {
+    color: #fff;
+  }
+
+  @include outline($color-danger);
+  @include fullWidth();
+}
+
+.dark {
+  @extend %btn;
+  background-color: $color-black;
+  color: #fff;
+  &:hover {
+    color: #fff;
+  }
+
+  @include outline($color-black);
+  @include fullWidth();
+}
+
+.white {
+  @extend %btn;
+  background-color: #fff;
+  color: $color-black;
+  &:hover {
+    color: $color-black;
+  }
+
+  @include outline(#fff, #fff);
+  @include fullWidth();
+}
+
+.google {
+  @extend %btn;
+  background-color: $color-google;
+  color: #fff;
+  &:hover {
+    color: #fff;
+  }
+
+  @include outline($color-google);
+  @include fullWidth();
+}
