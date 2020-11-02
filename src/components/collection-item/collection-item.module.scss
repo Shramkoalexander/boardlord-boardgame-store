@@ -1,50 +1,112 @@
-.tags {
-  //   z-index: 20;
-  position: absolute;
-  //   background-color: teal;
-  top: -10px;
-  right: -10px;
-  //   width: 4rem;
+@import "../../globals/styles/utils.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  box-shadow: 0 0 0 1px $color-gray inset;
+  position: relative;
+  transition: box-shadow $transition-time;
+
+  &:hover {
+    box-shadow: 0 0 0 1px $color-gray inset,
+      0 6px 15px rgba($color: $color-black, $alpha: 0.2);
+  }
 }
 
-.tag {
-  background-color: orange;
-  // padding: 1rem;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
+%favoriteWrapperBase {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  transition: opacity $transition-time;
+}
+
+.favoriteWrapper {
+  @extend %favoriteWrapperBase;
+}
+
+.favoriteWrapperInvisible {
+  @extend %favoriteWrapperBase;
+  opacity: 0;
+}
+
+.container:hover {
+  & .favoriteWrapper,
+  & .favoriteWrapperInvisible {
+    opacity: 1;
+  }
+}
+
+.tagList {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  padding: 1rem 1rem;
+}
+
+.imageContainer {
+  margin-bottom: 1rem;
+}
+
+.titleContainer {
+  $lh: 1rem;
+  $max-lines: 4;
+  height: $lh * $max-lines;
+  line-height: $lh;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  //   vertical-align: top;
-  //   vertical-align: middle
-  //   text-align: center;
-  //   align-self: center;
-  //   align-content: center;
-  //   justify-self: center;
-  margin: 0.1rem;
-  color: #fff;
+  text-align: center;
+  margin-bottom: 1rem;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    border-top: 1px solid $color-gray-light;
+    border-bottom: 1px solid $color-gray-light;
+    top: 0;
+    right: 15%;
+    bottom: 0;
+    left: 15%;
+    z-index: -1;
+  }
 }
 
-.top {
-  background-color: cornflowerblue;
+.titleText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  transition: color $transition-time;
+
+  &:hover {
+    color: $color-gray-dark;
+  }
 }
 
-.new {
-  background-color: orangered;
+.priceContainer {
+  display: flex;
+  justify-content: center;
+  margin-right: -0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.discount {
-  background-color: yellowgreen;
+.price {
+  font-size: 1.3rem;
+  font-weight: $font-weight-bold;
+  margin-right: 0.5rem;
 }
 
 .oldPrice {
   text-decoration: line-through;
-  font-size: 0.8em;
-  color: #aaa;
-  line-height: 0.5;
-}
-
-.discountPrice {
-  color: red;
+  font-weight: inherit;
+  color: $color-gray-dark;
 }

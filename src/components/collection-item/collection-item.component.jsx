@@ -1,67 +1,78 @@
 import React from "react";
-import classes from "./collection-item.module.scss";
-import { Link, withRouter } from "react-router-dom";
+import styles from "./collection-item.module.scss";
+import { Link } from "react-router-dom";
+import PurchaseButton from "../purchase-button/purchase-button.component";
+import FavoriteIcon from "../favorite-icon/favorite-icon.component";
+import { connect } from "react-redux";
+import { selectIsItemFavorite } from "../../redux/favorites/favorites.selectors";
+import { getFormatedPrice } from "../../redux/shop/shop.utils";
+import { hasDiscount, isNew, isTop, tagTypes } from "../tag/tag.utils";
+import Tag from "../tag/tag.component";
 
-function CollectionItem({ item, currency }) {
-  const [month, year] = item.published.split("/");
-  const today = new Date();
-  const dateToCompareFreshness = new Date();
-  dateToCompareFreshness.setMonth(today.getMonth() - 6);
-  const published = new Date(year, month);
-  const isNew = published >= dateToCompareFreshness;
-  const isTop = item.num_user_ratings >= 100 && item.average_user_rating >= 4.5;
-  const hasDiscount = item.discount_pirce;
-
+function CollectionItem({ item, currency, isItemFavorite }) {
   return (
-    <div className="d-flex flex-column justify-content-center text-center bg-white p-3 border position-relative">
-      <div className={`d-flex flex-column  ${classes.tags} `}>
-        <div
-          className={` ${classes.tag} ${classes.top} ${isTop ? `` : `d-none`}`}
-        >
-          TOP
-        </div>
-        <div
-          className={` ${classes.tag} ${classes.new} ${isNew ? `` : `d-none`}`}
-        >
-          NEW
-        </div>
-        <div
-          className={` ${classes.tag} ${classes.discount} ${
-            hasDiscount ? `` : `d-none`
-          }`}
-        >
-          %
-        </div>
-      </div>
-      <Link to={`/product-details/${item.alias}`}>
-        <img
-          src={require(`../../assets/images/boardgames/${item.alias}/${item.alias}.jpg`)}
-          height="150"
-          alt=""
+    <div className={styles.container}>
+      <div className={styles.tagList}>
+        <Tag type={tagTypes.DISCOUNT} show={hasDiscount(item.discount_pirce)} />
+        <Tag
+          type={tagTypes.TOP}
+          show={isTop(item.num_user_ratings, item.average_user_rating)}
         />
-      </Link>
-      <div>
-        <a href="/">{item.title}</a>
+        <Tag type={tagTypes.NEW} show={isNew(item.published)} />
       </div>
-      <div className={hasDiscount ? `${classes.oldPrice}` : ``}>
-        {`${item.price} ${currency}`}
+      <div
+        className={
+          isItemFavorite
+            ? styles.favoriteWrapper
+            : styles.favoriteWrapperInvisible
+        }
+      >
+        <FavoriteIcon item={item} />
       </div>
-      <div className={hasDiscount ? `${classes.discountPrice}` : `invisible`}>
-        {`${item.discount_pirce} ${currency}`}
-      </div>
-      {item.quantity > 0 ? (
-        <button className="mt-4 btn btn-primary">Купить</button>
-      ) : (
-        <button className="mt-4 btn btn-white border-primary ">
-          Нет в наличии
-        </button>
-      )}
 
-      <a href="/">
-        <span>подробнее</span>
-      </a>
+      <div className={styles.content}>
+        <div className={styles.imageContainer}>
+          <Link to={`/shop/product-details/${item.alias}`}>
+            <img
+              src={require(`../../assets/images/boardgames/${item.alias}/${item.alias}.jpg`)}
+              height="150"
+              alt="board game"
+            />
+          </Link>
+        </div>
+
+        <div className={styles.titleContainer} title={item.title}>
+          <Link
+            className={styles.titleText}
+            to={`/shop/product-details/${item.alias}`}
+          >
+            {item.title}
+          </Link>
+        </div>
+        <div className={styles.priceContainer}>
+          <div
+            className={`${styles.price} ${
+              hasDiscount(item.discount_pirce) ? styles.oldPrice : ""
+            }`}
+          >
+            {getFormatedPrice(currency, item.price)}
+          </div>
+          <div
+            className={`${styles.price} ${
+              hasDiscount(item.discount_pirce) ? styles.discountPrice : "d-none"
+            }`}
+          >
+            {getFormatedPrice(currency, item.discount_pirce)}
+          </div>
+        </div>
+      </div>
+      <PurchaseButton item={item} />
     </div>
   );
 }
 
-export default withRouter(CollectionItem);
+const mapStateToProps = (state, ownProps) => ({
+  isItemFavorite: selectIsItemFavorite(ownProps.item)(state),
+});
+
+export default connect(mapStateToProps)(CollectionItem);
