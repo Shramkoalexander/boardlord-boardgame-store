@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MultipleRange from "../../components/multiple-range/multiple-range.component";
 import { filterValues } from "./filter.utils";
 import { connect } from "react-redux";
@@ -13,99 +13,129 @@ import {
   selectIsInStock,
   selectPlayersCount,
   selectDebouncedPriceValues,
-  selectShowFilter,
   selectItemsFound,
   selectPriceLimits,
 } from "../../redux/filter/filter.selectors";
-import { useHistory } from "react-router-dom";
 import range from "lodash.range";
 import { createStructuredSelector } from "reselect";
+import OptionSelector from "../option-selector/option-selector.component";
+import styles from "./filter.module.scss";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
+import ButtonCustom from "../button-custom/button-custom.component";
+import { buttonStyleTypes } from "../button-custom/button-custom.utils";
+import useHistoryChange from "../../custom-hooks/useHistoryChange";
 
 function Filter({
   isInStock,
-  gameTime,
-  playersCount,
   resetFilter,
-  showFilter,
   setGameTime,
   toggleIsInStock,
   setPlayersCount,
   itemsFound,
 }) {
-  const history = useHistory();
+  useHistoryChange(() => {
+    resetFilter();
+  });
 
-  useEffect(() => {
-    const unlisten = history.listen(() => {
-      resetFilter();
-    });
-
-    return () => {
-      unlisten();
-    };
-  }, [history, resetFilter]);
-
-  return showFilter ? (
-    <div className="bg-white border p-3">
-      <h2 style={{ fontSize: "1.2rem" }}>Время партии</h2>
-      <select
-        name="gameTime"
-        id="gameTime"
-        value={gameTime}
-        onChange={(e) => {
-          setGameTime(e.target.value);
-        }}
-      >
-        <option value={filterValues.gameTime.UNDEF}>не указано</option>
-        <option value={filterValues.gameTime.SHORT}>короткая</option>
-        <option value={filterValues.gameTime.MEDIUM}>средняя</option>
-        <option value={filterValues.gameTime.LONG}>долгая</option>
-        <option value={filterValues.gameTime.VERY_LONG}>очень долгая</option>
-        <option value={filterValues.gameTime.DIFFERENT}>различная</option>
-      </select>
-      <h2 style={{ fontSize: "1.2rem" }}>Кол-во игроков</h2>
-
-      <select
-        name="playersCount"
-        id="playersCount"
-        value={playersCount}
-        onChange={(e) => {
-          setPlayersCount(e.target.value);
-        }}
-      >
-        <option value={filterValues.playersCount.ALL}>Все</option>
-        {range(1, filterValues.playersCount.COUNT).map((item) => (
-          <option key={`playerCount-${item}`} value={`${item}`}>
-            {item}
-          </option>
-        ))}
-        <option value={filterValues.playersCount.MORE}>
-          &gt; {filterValues.playersCount.COUNT}
-        </option>
-      </select>
-      <div className="py-3">
-        <input
-          type="checkbox"
-          checked={isInStock}
-          onChange={() => {
-            toggleIsInStock();
-          }}
-        />
-        <span>Только товары в наличии</span>
+  return (
+    <div className="row">
+      <div className="col-6 col-xl-12">
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Время партии:</h2>
+          <OptionSelector
+            options={[
+              { value: filterValues.gameTime.UNDEF, text: "Не указано" },
+              { value: filterValues.gameTime.SHORT, text: "Короткая" },
+              { value: filterValues.gameTime.MEDIUM, text: "Средняя" },
+              { value: filterValues.gameTime.LONG, text: "Долгая" },
+              {
+                value: filterValues.gameTime.VERY_LONG,
+                text: "Очень долгая",
+              },
+              { value: filterValues.gameTime.DIFFERENT, text: "Различная" },
+            ]}
+            onChange={(value) => {
+              setGameTime(value);
+            }}
+          />
+        </div>
       </div>
-      <h1 style={{ fontSize: "1.5rem" }}>Фильтр</h1>
-      <h2 style={{ fontSize: "1.2rem" }}>Цена</h2>
-      <MultipleRange />
-      <div>Найдено: {itemsFound}</div>
-      <button
-        onClick={() => {
-          resetFilter();
-        }}
-      >
-        Сбросить фильтр
-      </button>
+      <div className="col-6 col-xl-12">
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Кол-во игроков:</h2>
+          <OptionSelector
+            options={[
+              { value: filterValues.playersCount.ALL, text: "Все" },
+              ...range(1, filterValues.playersCount.COUNT + 1).map((item) => {
+                return { value: item, text: item };
+              }),
+
+              {
+                value: filterValues.playersCount.MORE,
+                text: `\u003E ${filterValues.playersCount.COUNT}`,
+              },
+            ]}
+            onChange={(value) => {
+              setPlayersCount(value);
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="col-12 ">
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Цена:</h2>
+          <MultipleRange />
+        </div>
+      </div>
+
+      <div className="col-12">
+        <div className={styles.inStock}>
+          <div className="mr-2">
+            <div
+              className={styles.checkbox}
+              onClick={() => {
+                toggleIsInStock();
+              }}
+              tabIndex={0}
+            >
+              {isInStock && (
+                <span className={`material-icons ${styles.checkboxTickIcon}`}>
+                  check
+                </span>
+              )}
+            </div>
+          </div>
+          <div>
+            <div>В наличии</div>
+          </div>
+        </div>
+
+        <div className={styles.found}>
+          <span className={styles.foundTitle}>Найдено:</span>
+          <SwitchTransition>
+            <CSSTransition
+              key={itemsFound}
+              timeout={0}
+              classNames={{
+                enterDone: styles.enterDone,
+              }}
+            >
+              <span className={styles.foundNumber}>{itemsFound}</span>
+            </CSSTransition>
+          </SwitchTransition>
+        </div>
+        <ButtonCustom
+          onClick={() => {
+            resetFilter();
+          }}
+          styleType={buttonStyleTypes.SECONDARY}
+          fullWidth
+        >
+          Сбросить фильтр
+        </ButtonCustom>
+      </div>
     </div>
-  ) : (
-    ""
   );
 }
 
@@ -115,7 +145,6 @@ const mapStateToProps = createStructuredSelector({
   playersCount: selectPlayersCount,
   priceLimits: selectPriceLimits,
   debouncedPriceValues: selectDebouncedPriceValues,
-  showFilter: selectShowFilter,
   itemsFound: selectItemsFound,
 });
 

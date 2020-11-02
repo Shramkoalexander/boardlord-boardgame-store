@@ -1,0 +1,69 @@
+@import "../../globals/styles/utils";
+
+.sectionTitle {
+  font-size: 1rem;
+  margin: 0;
+  margin-bottom: 1em;
+  font-weight: $font-weight-bold;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.inStock {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.found {
+  margin-bottom: 1em;
+}
+
+.foundTitle {
+  font-weight: $font-weight-bold;
+  margin-right: 0.5rem;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  background-color: $color-gray-light;
+  display: flex;
+  cursor: pointer;
+  outline: none;
+}
+
+.checkboxTickIcon {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-main;
+  font-size: 15px;
+  font-weight: $font-weight-bold;
+  user-select: none;
+}
+
+.enterDone {
+  animation-name: blinking;
+  animation-duration: 300ms;
+  animation-iteration-count: 4;
+  animation-direction: alternate;
+  opacity: 1;
+}
+
+@keyframes blinking {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

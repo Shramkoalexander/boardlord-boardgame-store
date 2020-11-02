@@ -1,8 +1,8 @@
-import { getProperPrice } from "../../redux/shop/shop.utils";
+import { getDiscountedPriceIfExist } from "../../redux/shop/shop.utils";
 
 export const filterValues = {
   gameTime: {
-    UNDEF: "undefined",
+    UNDEF: "unset",
     SHORT: "short",
     MEDIUM: "medium",
     LONG: "long",
@@ -58,7 +58,7 @@ export const filterGameTime = (collection, gameTime) => {
 
 export const filterPrice = (collection, priceValues) => {
   let filteredCollection = collection.filter((item) => {
-    const ItemPrice = getProperPrice(item);
+    const ItemPrice = getDiscountedPriceIfExist(item);
     return ItemPrice >= priceValues[0] && ItemPrice <= priceValues[1];
   });
 
@@ -88,7 +88,9 @@ export const filterInStock = (collection, isInStock) => {
   let filteredCollection = collection;
 
   if (isInStock) {
-    filteredCollection = filteredCollection.filter((item) => item.quantity > 0);
+    filteredCollection = filteredCollection.filter(
+      (item) => item.inStockCount > 0
+    );
   }
 
   return filteredCollection;
