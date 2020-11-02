@@ -1,0 +1,24 @@
+@import "../../globals/styles/utils";
+
+.btn {
+  background-color: $color-gray-light;
+  position: fixed;
+  bottom: 80px;
+  right: 80px;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+  transition: opacity $transition-time;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  @include media-breakpoint-down(md) {
+    display: none;
+  }
+}
