@@ -1,0 +1,34 @@
+@import "../../globals/styles/utils.scss";
+
+.linkList {
+  display: flex;
+}
+
+%item {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.title {
+  font-weight: $font-weight-bold;
+  max-width: 20rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nonActive {
+  @extend %item;
+
+  &::after {
+    content: ">";
+    padding: 0 0.6rem;
+  }
+}
+
+.active {
+  @extend %item;
+
+  color: $color-gray-dark;
+}
