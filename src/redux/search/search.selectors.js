@@ -7,12 +7,22 @@ export const selectIsSearchFieldVisible = createSelector(
   (search) => search.isSearchFieldVisible
 );
 
+export const selectIsSearchDropdownVisible = createSelector(
+  [selectSearch],
+  (search) => search.isSearchDropdownVisible
+);
+
+export const selectIsSearchModalVisible = createSelector(
+  [selectSearch],
+  (search) => search.isSearchModalVisible
+);
+
 export const selectCurrenListItemIndex = createSelector(
   [selectSearch],
   (search) => search.currenListItemIndex
 );
 
-export const selectSearchInput = createSelector(
+export const selectSearchQuery = createSelector(
   [selectSearch],
-  (search) => search.searchInput
+  (search) => search.searchQuery
 );

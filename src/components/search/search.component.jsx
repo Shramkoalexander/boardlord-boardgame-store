@@ -1,46 +1,65 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import debounce from "lodash.debounce";
-import EscapeOutside from "../escape-outside/escape-outside.component";
-import classes from "./seatch.module.scss";
+import EscapeOutsideWrapper from "../escape-outside/escape-outside-wrapper.component";
+import styles from "./search.module.scss";
 import { findCollectionItems } from "./search.utils";
 import { connect } from "react-redux";
 import {
-  selectIsSearchFieldVisible,
   selectCurrenListItemIndex,
-  selectSearchInput,
+  selectSearchQuery,
+  selectIsSearchDropdownVisible,
 } from "../../redux/search/search.selectors";
 import {
-  hideSearchField,
   setCurrentListItemIndex,
   increaseCurrentListItemIndex,
   decreaseCurrentListItemIndex,
-  setSearchInput,
+  resetCurrentListItemIndex,
+  setSearchQuery,
+  hideSearchDropdown,
+  showSearchDropdown,
+  showSearchModal,
+  hideSearchModal,
 } from "../../redux/search/search.actions";
 import { selectCollection } from "../../redux/shop/shop.selectors";
 import { createStructuredSelector } from "reselect";
+import {
+  selectBreakpoints,
+  selectCurrentViewportAlias,
+} from "../../redux/breakpoints-provider/breakpoints-provider.selectors";
+import useHistoryChange from "../../custom-hooks/useHistoryChange";
 
 function Search({
   collection,
-  isSearchFieldVisible,
-  hideSearchField,
+  isSearchDropdownVisible,
   currenListItemIndex,
   setCurrentListItemIndex,
   increaseCurrentListItemIndex,
   decreaseCurrentListItemIndex,
-  setSearchInput,
-  searchInput,
+  resetCurrentListItemIndex,
+  setSearchQuery,
+  searchQuery,
+  hideSearchDropdown,
+  showSearchDropdown,
+  hideSearchModal,
+  modal = false,
 }) {
   const history = useHistory();
 
+  const [searchFieldInput, setSearchFieldInput] = useState(searchQuery);
   const searchFieldElement = useRef();
 
-  const foundCollection =
-    searchInput.length > 1 ? findCollectionItems(collection, searchInput) : [];
+  const [foundCollection, setFoundCollection] = useState([]);
+
+  useEffect(() => {
+    setFoundCollection(
+      searchQuery.length > 1 ? findCollectionItems(collection, searchQuery) : []
+    );
+  }, [collection, searchQuery]);
 
   const getTitleForList = (title) => {
-    const search = searchInput.toLowerCase().trim();
+    const search = searchQuery.toLowerCase().trim();
     const foundIndex = title.toLowerCase().indexOf(search);
     const titleFirstPart = title.slice(0, foundIndex);
     const titleFoundPart = title.slice(foundIndex, foundIndex + search.length);
@@ -49,20 +68,23 @@ function Search({
     return (
       <>
         {titleFirstPart}
-        <span style={{ fontWeight: "bold" }}>{titleFoundPart}</span>
+        <span className={styles.dropdownMatch}>{titleFoundPart}</span>
         {titleLastPart}
       </>
     );
   };
 
-  const handleSearchFieldChangeDebounced = debounce((value) => {
-    setSearchInput(value);
-  }, 200);
+  const handleSearchFieldChangeDebounced = useCallback(
+    debounce((value) => {
+      setSearchQuery(value);
+    }, 200),
+    []
+  );
 
   const handleClearSearch = useCallback(() => {
-    setSearchInput("");
-    if (searchFieldElement.current) searchFieldElement.current.value = "";
-  }, [setSearchInput]);
+    setSearchFieldInput("");
+    setSearchQuery("");
+  }, [setSearchQuery]);
 
   const handleSearch = () => {
     if (foundCollection[currenListItemIndex]) {
@@ -70,169 +92,184 @@ function Search({
         `/shop/product-details/${foundCollection[currenListItemIndex].alias}`
       );
     } else {
-      searchInput.trim() &&
-        history.push(`/shop/search/?q=${searchInput.trim().toLowerCase()}`);
+      searchQuery.trim()
+        ? history.push(`/shop/search/?q=${searchQuery.trim().toLowerCase()}`)
+        : searchFieldElement.current.focus();
     }
   };
 
   useEffect(() => {
-    !isSearchFieldVisible
-      ? handleClearSearch()
-      : searchFieldElement.current.focus();
-  }, [handleClearSearch, isSearchFieldVisible]);
+    foundCollection.length > 0 && showSearchDropdown();
+  }, [foundCollection.length, searchQuery, showSearchDropdown]); // searchQuery dependency is important
 
   useEffect(() => {
-    if (foundCollection[currenListItemIndex] && isSearchFieldVisible)
-      searchFieldElement.current.value = foundCollection[
-        currenListItemIndex
-      ].title.toLowerCase();
-  }, [currenListItemIndex, foundCollection, isSearchFieldVisible]);
+    !searchQuery && hideSearchDropdown();
+  }, [hideSearchDropdown, searchQuery]);
+
+  useHistoryChange(() => {
+    handleClearSearch();
+    modal && hideSearchModal();
+  });
 
   useEffect(() => {
-    const unlisten = history.listen(() => {
-      hideSearchField();
-    });
-    return () => {
-      unlisten((prevState) => {
-        return !prevState;
-      });
-    };
-  }, [hideSearchField, history]);
+    modal && searchFieldElement.current.focus();
+  }, [modal]);
+
+  useEffect(() => {
+    document.body.style.overflow = modal ? "hidden" : "visible";
+  }, [modal]);
+
+  useEffect(() => {
+    handleSearchFieldChangeDebounced(searchFieldInput);
+  }, [handleSearchFieldChangeDebounced, searchFieldInput]);
 
   return (
-    isSearchFieldVisible && (
-      <EscapeOutside onEscapeOutside={hideSearchField}>
-        <div
-          className={`container-lg position-absolute ${
-            isSearchFieldVisible ? "visible" : "invisible"
-          }`}
-          style={{
-            left: "0",
-            right: "0",
-            zIndex: "10",
-          }}
-        >
-          <div className="row">
-            <div
-              className="d-flex"
-              style={{
-                backgroundColor: "#eee",
-                width: "100%",
-                padding: "0.3rem",
+    <EscapeOutsideWrapper
+      onEscapeOutside={hideSearchDropdown}
+      isNodeToEscapeVisible={isSearchDropdownVisible}
+    >
+      <div
+        className={`${styles.container} 
+        ${modal ? styles.container_fixed : "d-none d-md-block"}`}
+      >
+        {modal && (
+          <button
+            className={styles.closeModalBtn}
+            onClick={() => {
+              handleClearSearch();
+              hideSearchModal();
+            }}
+          >
+            <span className={`material-icons ${styles.closeModalIcon}`}>
+              clear
+            </span>
+          </button>
+        )}
+        <div style={{ position: "relative" }}>
+          <div className={styles.searchFieldContainer}>
+            <input
+              ref={searchFieldElement}
+              autoComplete="off"
+              onBlur={() => {
+                resetCurrentListItemIndex();
               }}
-            >
-              <div style={{ position: "relative", flex: "1 0 auto" }}>
-                <input
-                  ref={searchFieldElement}
-                  autoComplete="off"
-                  onKeyDown={(e) => {
-                    switch (e.keyCode) {
-                      case 40: // DOWN arrow
-                        if (foundCollection.length > 0) {
-                          e.preventDefault();
-                          if (
-                            currenListItemIndex <
-                            foundCollection.length - 1
-                          ) {
-                            increaseCurrentListItemIndex();
-                          } else {
-                            setCurrentListItemIndex(0);
-                          }
-                        }
-                        break;
-                      case 38: // UP arrow
-                        if (foundCollection.length > 0) {
-                          e.preventDefault();
-                          if (currenListItemIndex > 0) {
-                            decreaseCurrentListItemIndex();
-                          } else {
-                            setCurrentListItemIndex(foundCollection.length - 1);
-                          }
-                        }
-                        break;
-                      case 13: // Enter key
-                        handleSearch();
-                        break;
-                      default:
-                        break;
+              onKeyDown={(e) => {
+                switch (e.keyCode) {
+                  case 40: // DOWN arrow
+                    if (foundCollection.length > 0) {
+                      e.preventDefault();
+                      if (currenListItemIndex < foundCollection.length - 1) {
+                        increaseCurrentListItemIndex();
+                      } else {
+                        setCurrentListItemIndex(0);
+                      }
                     }
-                  }}
-                  onChange={(e) => {
-                    e.persist();
-                    handleSearchFieldChangeDebounced(e.target.value);
-                  }}
-                  type="search"
-                  name="search-field"
-                  id="search-field"
-                  placeholder="Найти игру..."
-                  className={classes.searchField}
+                    break;
+                  case 38: // UP arrow
+                    if (foundCollection.length > 0) {
+                      e.preventDefault();
+                      if (currenListItemIndex > 0) {
+                        decreaseCurrentListItemIndex();
+                      } else {
+                        setCurrentListItemIndex(foundCollection.length - 1);
+                      }
+                    }
+                    break;
+                  case 13: // Enter key
+                    handleSearch();
+                    break;
+                  default:
+                    break;
+                }
+              }}
+              onChange={(e) => {
+                setSearchFieldInput(e.target.value);
+              }}
+              type="search"
+              name="search-field"
+              id="search-field"
+              placeholder="Найти ..."
+              className={styles.searchField}
+              value={searchFieldInput}
+            />
+
+            <div className={styles.buttonsWrapper}>
+              <button
+                className={`${styles.clearButton} ${
+                  !searchFieldInput ? "invisible" : ""
+                }`}
+                onClick={() => {
+                  handleClearSearch();
+                  searchFieldElement.current.focus();
+                }}
+              >
+                <span className={`material-icons ${styles.clearIcon}`}>
+                  clear
+                </span>
+              </button>
+              <button className={styles.searchButton} onClick={handleSearch}>
+                <img
+                  src={require("../../assets/images/search-icon.svg")}
+                  height="100%"
+                  className={styles.searchIcon}
+                  alt="search-icon"
                 />
-                <button
-                  className={classes.clearButton}
-                  onClick={(e) => {
-                    handleClearSearch(e);
-                    searchFieldElement.current.focus();
-                  }}
-                ></button>
-                <div
-                  className={
-                    foundCollection.length > 0 && isSearchFieldVisible
-                      ? "visible"
-                      : "invisible"
-                  }
-                  style={{
-                    maxHeight: "20rem",
-                    border: "1px solid black",
-                    backgroundColor: "white",
-                    overflow: "auto",
-                    position: "absolute",
-                    marginTop: "5px",
-                    left: "0",
-                    right: "20px",
-                  }}
-                >
-                  {foundCollection.map((item, index) => (
-                    <Link
-                      style={{ backgroundColor: "yellow" }}
-                      key={`foundItem-${item.id}`}
-                      to={`/shop/product-details/${item.alias}`}
-                    >
-                      <div
-                        id={`foundItemTest-${index}`}
-                        onMouseEnter={() => setCurrentListItemIndex(index)}
-                        className={
-                          index === currenListItemIndex ? "bg-dark" : ""
-                        }
-                      >
-                        {getTitleForList(item.title)}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              <button onClick={handleSearch}>Find</button>
+              </button>
             </div>
           </div>
+          <div
+            className={`${styles.dropdown} ${
+              isSearchDropdownVisible && foundCollection.length > 0
+                ? ""
+                : "invisible"
+            }`}
+          >
+            {foundCollection.map((item, index) => (
+              <Link
+                key={`foundItem-${item.id}`}
+                to={`/shop/product-details/${item.alias}`}
+              >
+                <div
+                  id={`foundItemTest-${index}`}
+                  onMouseEnter={() => setCurrentListItemIndex(index)}
+                  onMouseLeave={() => resetCurrentListItemIndex()}
+                  className={
+                    index === currenListItemIndex
+                      ? styles.dropdownListItem_active
+                      : styles.dropdownListItem
+                  }
+                >
+                  {getTitleForList(item.title)}
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </EscapeOutside>
-    )
+      </div>
+    </EscapeOutsideWrapper>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
-  isSearchFieldVisible: selectIsSearchFieldVisible,
+  currentViewportAlias: selectCurrentViewportAlias,
+  breakpoints: selectBreakpoints,
   collection: selectCollection,
   currenListItemIndex: selectCurrenListItemIndex,
-  searchInput: selectSearchInput,
+  searchQuery: selectSearchQuery,
+  isSearchDropdownVisible: selectIsSearchDropdownVisible,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  hideSearchField: () => dispatch(hideSearchField()),
   setCurrentListItemIndex: (listItemIndex) =>
     dispatch(setCurrentListItemIndex(listItemIndex)),
   increaseCurrentListItemIndex: () => dispatch(increaseCurrentListItemIndex()),
   decreaseCurrentListItemIndex: () => dispatch(decreaseCurrentListItemIndex()),
-  setSearchInput: (searchInput) => dispatch(setSearchInput(searchInput)),
+  resetCurrentListItemIndex: () => dispatch(resetCurrentListItemIndex()),
+  setSearchQuery: (searchQuery) => dispatch(setSearchQuery(searchQuery)),
+  hideSearchDropdown: () => dispatch(hideSearchDropdown()),
+  showSearchDropdown: () => dispatch(showSearchDropdown()),
+  hideSearchModal: () => dispatch(hideSearchModal()),
+  showSearchModal: () => dispatch(showSearchModal()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

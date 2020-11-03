@@ -1,0 +1,141 @@
+@import "../../globals/styles/utils.scss";
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+.container_fixed {
+  position: fixed;
+  background-color: $color-gray-light;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  z-index: $z-index-modal;
+  padding: 5rem 1rem;
+}
+
+.searchFieldContainer {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  z-index: 1;
+  justify-content: flex-end;
+}
+
+.searchField {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  display: block;
+  background-color: #fff;
+  border-radius: 2rem;
+  padding-left: 1rem;
+  padding-right: 3.5rem;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  &:focus {
+    box-shadow: 0 0 0 2px $color-main inset;
+  }
+
+  &::-webkit-search-cancel-button {
+    visibility: hidden;
+  }
+}
+
+.clearButton {
+  display: flex;
+  align-items: center;
+}
+
+.closeModalBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  color: $color-gray-dark;
+  border: 1px solid $color-gray-dark;
+
+  &:hover {
+    color: $color-black;
+  }
+}
+
+.closeModalIcon {
+  font-size: 2rem;
+}
+
+.clearIcon {
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+}
+
+.searchButton {
+  font-size: 0.2rem;
+  background-color: $color-main;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 50%;
+}
+
+.searchIcon {
+  display: block;
+  height: 1rem;
+}
+
+.buttonsWrapper {
+  display: flex;
+  z-index: 1;
+}
+
+.dropdown {
+  max-height: 20rem;
+  background-color: $color-gray-light;
+  overflow: auto;
+  position: absolute;
+  padding: 2rem 0 1rem;
+  line-height: 2.5rem;
+  top: 50%;
+  left: 0;
+  right: 0;
+
+  a {
+    color: $color-black;
+  }
+}
+
+.dropdownListItem {
+  padding-left: 1rem;
+  color: #999;
+
+  @include media-breakpoint-down(sm) {
+    border-radius: 2rem;
+  }
+}
+
+.dropdownListItem_active {
+  @extend .dropdownListItem;
+  background-color: $color-black;
+  color: #fff;
+
+  .dropdownMatch {
+    color: #fff;
+    font-weight: 500;
+  }
+}
+
+.dropdownMatch {
+  color: $color-black;
+  font-weight: 600;
+}
