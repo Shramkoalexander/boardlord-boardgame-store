@@ -1,0 +1,96 @@
+@import "../../globals/styles/utils.scss";
+
+.modalOverlay {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  position: fixed;
+  z-index: $z-index-modal;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+
+  .enter & {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .enterDone & {
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: background $transition-time;
+  }
+
+  .exit {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .exitActive & {
+    background-color: rgba(0, 0, 0, 0);
+    transition: background $transition-time;
+  }
+}
+
+.modal {
+  height: 100%;
+  width: 22rem;
+  background-color: $color-gray-light;
+  overflow: auto;
+  position: relative;
+
+  .enter & {
+    transform: translateX(-100%);
+  }
+
+  .enterDone & {
+    transform: translateX(0);
+    transition: transform $transition-time;
+  }
+
+  .exit {
+    transform: translateX(0);
+  }
+
+  .exitActive & {
+    transform: translateX(-100%);
+    transition: transform $transition-time;
+  }
+}
+
+.menuItem {
+  font-size: 1.7rem;
+  border-bottom: 1px solid $color-gray;
+
+  a {
+    display: block;
+    padding: 0.8rem 2rem;
+  }
+
+  &:hover {
+    background-color: $color-black;
+
+    a {
+      color: white;
+    }
+  }
+}
+
+.closeBtnWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  color: $color-gray-dark;
+  border: 1px solid $color-gray-dark;
+
+  &:hover {
+    color: $color-black;
+  }
+}
+
+.closeIcon {
+  font-size: 2rem;
+}
