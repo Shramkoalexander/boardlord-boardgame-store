@@ -1,5 +1,21 @@
 @import "../../globals/styles/utils";
 
+.extraSection {
+  color: #fff;
+  background-color: $color-black;
+  border-bottom: 1px solid $color-main;
+}
+
+.topSection {
+  color: #fff;
+  background-color: $color-black;
+  position: relative;
+}
+
+.bottomSection {
+  background-color: $color-main;
+}
+
 .menuIcon {
   a {
     color: #fff;
@@ -7,43 +23,40 @@
 }
 
 .navList {
-  display: flex;
   font-size: 1rem;
+}
 
-  a {
-    display: block;
-    padding: 1rem;
+%navItemBase {
+  padding: 0.4rem 1rem;
+  display: block;
+
+  transition: color $transition-time, background $transition-time;
+  position: relative;
+  overflow: hidden;
+}
+
+.navLink {
+  @extend %navItemBase;
+  color: $color-black;
+
+  &:hover {
+    background-color: $color-black;
     color: #fff;
-    text-decoration: none;
-
-    &:hover {
-      background-color: teal;
-    }
   }
 }
 
-%option {
-  padding: 0 0.2rem;
-  font-size: 1.4rem;
-
-  a {
-    display: block;
-    color: #fff;
-    border-radius: 50%;
-    padding: 0.4rem;
-  }
+.navLinkActive {
+  @extend %navItemBase;
+  background-color: $color-black;
+  color: #fff;
 }
 
 .search {
-  @extend %option;
-}
-
-.phone {
-  @extend %option;
+  padding: 0.4rem 0.8rem;
+  padding-right: 1rem;
 }
 
 .cart {
-  @extend %option;
   position: relative;
 }
 
@@ -53,16 +66,44 @@
   height: 15px;
   border-radius: 50%;
   top: -1px;
-  right: 3px;
-  background-color: red;
+  right: 0px;
+  background-color: $color-danger;
+  color: #fff;
   font-size: 0.6rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
 }
 
-.user {
-  @extend %option;
+.iconContainer {
+  padding: 0.5rem;
+  position: relative;
 }
 
 .icon {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fontIcon {
+  color: #fff;
+  display: block;
+}
+
+.favoriteIcon {
+  padding-bottom: 2px;
+}
+
+.loginIcon {
+  padding-right: 4px;
+}
+
+.searchIcon {
+  height: 1.2rem;
   display: block;
 }
