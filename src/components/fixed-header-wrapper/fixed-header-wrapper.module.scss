@@ -1,0 +1,22 @@
+@import "../../globals/styles/utils";
+
+.header {
+  position: fixed;
+  z-index: $z-index-fixed;
+  width: 100%;
+  top: 0;
+  transform: translateY(0);
+  transition: transform 300ms, opacity 100ms 100ms, z-index 300ms;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 300ms, opacity 0ms, z-index 0ms;
+}
+
+.invisible {
+  opacity: 0;
+  transform: translateY(-100%);
+  z-index: -1;
+}
