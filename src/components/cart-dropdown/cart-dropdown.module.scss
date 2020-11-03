@@ -1,0 +1,89 @@
+@import "../../globals/styles/utils";
+
+.title {
+  font-size: 1.5rem;
+}
+
+.itemList {
+  overflow: auto;
+  max-height: 18rem;
+}
+
+.item {
+  display: flex;
+  border: 1px solid $color-gray;
+  padding: 1rem 0;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.itemImageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1.5rem;
+  height: 100%;
+  width: 120px;
+}
+
+.itemImage {
+  height: 80px;
+  width: auto;
+}
+
+.itemTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 12rem;
+  margin-bottom: 1rem;
+
+  &,
+  a {
+    transition: color $transition-time;
+
+    &:hover {
+      color: $color-gray-dark;
+    }
+  }
+}
+
+.itemSum {
+  font-weight: $font-weight-bold;
+  width: 5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clearBtn {
+  width: 20px;
+  height: 20px;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-gray;
+  border-radius: 50%;
+}
+
+.clearIcon {
+  font-size: 1rem;
+}
+
+.total {
+  font-weight: $font-weight-bold;
+  font-size: 1.2rem;
+  width: 11rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.emptyCart {
+  color: $color-black;
+  text-align: center;
+  white-space: nowrap;
+}
