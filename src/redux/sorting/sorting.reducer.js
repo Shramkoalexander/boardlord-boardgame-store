@@ -3,7 +3,7 @@ import { sortTypeValues } from "../../components/sorting/sorting.utils";
 
 const initialState = {
   sortType: sortTypeValues.POPULAR,
-  showSorting: true,
+  itemsToSortCount: 0,
 };
 
 const sortingReducer = (state = initialState, { type, payload }) => {
@@ -11,8 +11,8 @@ const sortingReducer = (state = initialState, { type, payload }) => {
     case sortingActionTypes.SET_SORT_TYPE:
       return { ...state, sortType: payload };
 
-    case sortingActionTypes.SET_SHOW_SORTING:
-      return { ...state, showSorting: payload };
+    case sortingActionTypes.SET_ITEMS_TO_SORT_COUNT:
+      return { ...state, itemsToSortCount: payload };
 
     default:
       return state;

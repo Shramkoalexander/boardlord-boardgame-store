@@ -7,7 +7,7 @@ export const selectSortType = createSelector(
   (sorting) => sorting.sortType
 );
 
-export const selectShowSorting = createSelector(
+export const selectItemsToSortCount = createSelector(
   [selectSorting],
-  (sorting) => sorting.showSorting
+  (sorting) => sorting.itemsToSortCount
 );

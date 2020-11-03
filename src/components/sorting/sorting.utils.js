@@ -1,4 +1,4 @@
-import { getProperPrice } from "../../redux/shop/shop.utils";
+import { getDiscountedPriceIfExist } from "../../redux/shop/shop.utils";
 
 export const sortTypeValues = {
   POPULAR: "popular",
@@ -46,7 +46,10 @@ export const sortCollectionsByType = (sortType, collection) => {
       break;
     case PRICE_ASC:
       newCollection.sort((a, b) => {
-        if (parseInt(getProperPrice(a), 10) < parseInt(getProperPrice(b), 10)) {
+        if (
+          parseInt(getDiscountedPriceIfExist(a), 10) <
+          parseInt(getDiscountedPriceIfExist(b), 10)
+        ) {
           return -1;
         } else {
           return 1;
@@ -55,7 +58,10 @@ export const sortCollectionsByType = (sortType, collection) => {
       break;
     case PRICE_DESC:
       newCollection.sort((a, b) => {
-        if (parseInt(getProperPrice(a), 10) < parseInt(getProperPrice(b), 10)) {
+        if (
+          parseInt(getDiscountedPriceIfExist(a), 10) <
+          parseInt(getDiscountedPriceIfExist(b), 10)
+        ) {
           return 1;
         } else {
           return -1;

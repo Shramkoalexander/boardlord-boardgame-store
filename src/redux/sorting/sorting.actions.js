@@ -5,7 +5,7 @@ export const setSortType = (sortType) => ({
   payload: sortType,
 });
 
-export const setShowSorting = (showSorting) => ({
-  type: sortingActionTypes.SET_SHOW_SORTING,
-  payload: showSorting,
+export const setItemsToSortCount = (itemsToSortCount) => ({
+  type: sortingActionTypes.SET_ITEMS_TO_SORT_COUNT,
+  payload: itemsToSortCount,
 });
