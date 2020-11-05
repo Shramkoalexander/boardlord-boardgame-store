@@ -1,11 +1,11 @@
 import React from "react";
-import classes from "./logo.module.scss";
-import logo from "./logo.svg";
+import styles from "./logo.module.scss";
+import logo from "../../assets/images/logo.svg";
 
 function Logo({ size }) {
   return (
-    <div className={`${classes.logo} ${size ? classes[`logo--${size}`] : ""}`}>
-      <img src={logo} alt="logo" className={`${classes.img}`} />
+    <div className={`${styles.container} ${size ? styles[size] : ""}`}>
+      <img src={logo} alt="logo" className={`${styles.img}`} />
     </div>
   );
 }
