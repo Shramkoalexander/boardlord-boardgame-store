@@ -1,0 +1,122 @@
+@import "../../globals/styles/utils";
+
+.container {
+  background-color: $color-black;
+  color: #fff;
+}
+
+.topSection {
+  border-bottom: 1px solid $color-main;
+  padding: 1rem 0;
+
+  @include media-breakpoint-down(sm) {
+    padding: 2rem 0;
+  }
+}
+
+.navList {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  justify-content: center;
+  margin-bottom: -1rem;
+
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+%linkStyle {
+  transition: color $transition-time;
+  color: #fff;
+
+  &:hover {
+    color: rgba($color: #fff, $alpha: 0.8);
+  }
+}
+
+.navItem {
+  margin-bottom: 1rem;
+}
+
+.navItemText {
+  margin: 0 1rem;
+  display: inline-block;
+  line-height: 1rem;
+
+  &,
+  a {
+    @extend %linkStyle;
+  }
+}
+
+.contactInfo {
+  margin: 4rem 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  @include media-breakpoint-down(sm) {
+    margin: 3rem 0;
+  }
+}
+
+.phoneNumber {
+  color: #fff;
+  margin-bottom: 0.5rem;
+
+  a {
+    @extend %linkStyle;
+  }
+}
+
+.email {
+  color: #fff;
+  margin-bottom: 0.5rem;
+
+  a {
+    @extend %linkStyle;
+  }
+}
+
+.socialMediaList {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  margin-right: -0.5rem;
+
+  a {
+    @extend %linkStyle;
+  }
+}
+
+.socialMediaItem {
+  margin-right: 0.8rem;
+}
+
+.fontIcon {
+  font-size: 3rem;
+}
+
+.fbFontIcon {
+  font-size: 2.3rem;
+}
+
+.instFontIcon {
+  font-size: 2.7rem;
+}
+
+.bottomSection {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: $color-main;
+  color: $color-black;
+}
+
+.companyInfo {
+  display: flex;
+  justify-content: center;
+  font-size: 0.8rem;
+}
