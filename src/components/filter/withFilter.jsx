@@ -11,7 +11,6 @@ import {
   selectGameTime,
   selectIsInStock,
   selectPlayersCount,
-  selectPriceLimits,
   selectDebouncedPriceValues,
   selectNeedResetPriceLimits,
   selectShowFilter,
@@ -21,7 +20,7 @@ import {
   setShowFilter,
   setItemsFound,
 } from "../../redux/filter/filter.actions";
-import { getProperPrice } from "../../redux/shop/shop.utils";
+import { getDiscountedPriceIfExist } from "../../redux/shop/shop.utils";
 import { createStructuredSelector } from "reselect";
 
 const withFilter = (WrappedComponent) => {
@@ -41,7 +40,6 @@ const withFilter = (WrappedComponent) => {
   }) => {
     const applyFilter = useCallback(() => {
       let filteredCollection;
-
       filteredCollection = intersectionBy(
         filterInStock(collection, isInStock),
         filterGameTime(collection, gameTime),
@@ -67,7 +65,6 @@ const withFilter = (WrappedComponent) => {
     ]);
 
     const filteredCollection = showFilter ? applyFilter() : collection;
-
     useEffect(() => {
       if (needResetPriceLimits) {
         let newMin;
@@ -75,11 +72,11 @@ const withFilter = (WrappedComponent) => {
 
         if (filteredCollection.length > 0) {
           newMin = Math.min(
-            ...filteredCollection.map((item) => getProperPrice(item))
+            ...filteredCollection.map((item) => getDiscountedPriceIfExist(item))
           );
 
           newMax = Math.max(
-            ...filteredCollection.map((item) => getProperPrice(item))
+            ...filteredCollection.map((item) => getDiscountedPriceIfExist(item))
           );
         } else {
           newMin = 0;
@@ -98,7 +95,13 @@ const withFilter = (WrappedComponent) => {
       setItemsFound(filteredCollection.length);
     });
 
-    return <WrappedComponent collection={filteredCollection} {...otherProps} />;
+    return (
+      <WrappedComponent
+        collection={filteredCollection}
+        showFilter={showFilter}
+        {...otherProps}
+      />
+    );
   };
 
   return connect(mapStateToProps, mapDispatchToProps)(WithFilterComponent);
@@ -108,7 +111,6 @@ const mapStateToProps = createStructuredSelector({
   gameTime: selectGameTime,
   isInStock: selectIsInStock,
   playersCount: selectPlayersCount,
-  priceLimits: selectPriceLimits,
   debouncedPriceValues: selectDebouncedPriceValues,
   needResetPriceLimits: selectNeedResetPriceLimits,
   showFilter: selectShowFilter,
