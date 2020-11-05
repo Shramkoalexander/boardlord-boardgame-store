@@ -11,3 +11,8 @@ export const selectCurrency = createSelector(
   [selectShop],
   (shop) => shop.currency
 );
+
+export const selectIsCollectionLoaded = createSelector(
+  [selectCollection],
+  (collection) => collection.length > 0
+);
