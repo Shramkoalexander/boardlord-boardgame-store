@@ -1,0 +1,27 @@
+@import "../../globals/styles/utils.scss";
+
+.sideSectionBox {
+  padding: 1.5rem;
+  border: 1px solid $color-gray;
+  margin-bottom: 1rem;
+}
+
+.navLinkList {
+  margin-bottom: -1rem;
+
+  li {
+    margin-bottom: 1rem;
+  }
+}
+
+.navLink {
+  transition: color $transition-time;
+
+  &:hover {
+    color: $color-gray-dark;
+  }
+}
+
+.navLinkActive {
+  color: $color-gray-dark;
+}
