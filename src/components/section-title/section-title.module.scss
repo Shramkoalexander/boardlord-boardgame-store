@@ -1,0 +1,10 @@
+@import "../../globals/styles/utils.scss";
+
+.title {
+  font-size: 2rem;
+  margin: 0 0 1rem;
+
+  @include media-breakpoint-down(sm) {
+    font-size: 1.5rem;
+  }
+}
