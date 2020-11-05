@@ -1,0 +1,45 @@
+@import "../../globals/styles/utils.scss";
+
+.container {
+  position: relative;
+}
+
+.currentOption {
+  cursor: pointer;
+  background-color: $color-gray-light;
+  padding: 0.3rem 0.7rem;
+  outline: none;
+  user-select: none;
+}
+
+.disabled {
+  @extend .currentOption;
+  cursor: not-allowed;
+  color: #bbb;
+}
+
+.dropdown {
+  position: absolute;
+  background-color: #fff;
+  transform: translateY(5px);
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  max-width: 25em;
+  z-index: $z-index-dropdown;
+  border: 1px solid $color-gray;
+  max-height: 16em;
+  overflow: auto;
+}
+
+.option {
+  padding: 0.5rem 1rem;
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+.optionActive {
+  background-color: $color-gray-light;
+}
