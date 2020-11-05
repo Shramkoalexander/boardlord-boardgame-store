@@ -1,11 +1,12 @@
 import React from "react";
 import Range from "rc-slider/lib/Range";
-import "../..//rc-slider.theme.scss";
+import "./rc-slider.theme.scss";
 import { connect } from "react-redux";
 import {
   setDebouncedPriceValues,
   setPriceValues,
 } from "../../redux/filter/filter.actions";
+import styles from "./multiple-range.module.scss";
 import {
   selectPriceValues,
   selectPriceLimits,
@@ -19,7 +20,6 @@ function MultipleRange({
   setPriceValues,
   setDebouncedPriceValues,
 }) {
-  console.log("in multirage");
   const [minPrice, maxPrice] = priceLimits;
 
   const needDisable = minPrice === maxPrice;
@@ -27,12 +27,17 @@ function MultipleRange({
 
   return (
     <>
-      <div className="d-flex  justify-content-center py-1">
-        <div className="w-25">
-          {needDisable ? UNDEFINED_CHAR : priceValues[0]}
+      <div className={styles.priceContainer}>
+        <div className={styles.minPrice}>
+          {needDisable
+            ? UNDEFINED_CHAR
+            : new Intl.NumberFormat("ru-RU").format(priceValues[0])}
         </div>
-        <div className="w-25">
-          {needDisable ? UNDEFINED_CHAR : priceValues[1]}
+        <span className={styles.priceDivider}>-</span>
+        <div className={styles.maxPrice}>
+          {needDisable
+            ? UNDEFINED_CHAR
+            : new Intl.NumberFormat("ru-RU").format(priceValues[1])}
         </div>
       </div>
       {needDisable ? (
@@ -52,10 +57,6 @@ function MultipleRange({
           }}
         />
       )}
-      <div className="d-flex  justify-content-between py-1">
-        <div>{needDisable ? UNDEFINED_CHAR : minPrice}</div>
-        <div>{needDisable ? UNDEFINED_CHAR : maxPrice}</div>
-      </div>
     </>
   );
 }

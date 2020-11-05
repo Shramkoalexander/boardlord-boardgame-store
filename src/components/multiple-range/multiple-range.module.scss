@@ -1,0 +1,33 @@
+@import "../../globals/styles/utils.scss";
+
+.priceContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+%price {
+  cursor: default;
+  width: 4em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: $color-gray-light;
+  background-color: $color-gray;
+  padding: 0.3rem;
+  text-align: center;
+}
+
+.minPrice {
+  @extend %price;
+}
+
+.maxPrice {
+  @extend %price;
+}
+
+.priceDivider {
+  cursor: default;
+  padding: 0 0.5rem;
+}
