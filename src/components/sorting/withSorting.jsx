@@ -2,21 +2,21 @@ import React, { useEffect } from "react";
 import { sortCollectionsByType } from "./sorting.utils";
 import { selectSortType } from "../../redux/sorting/sorting.selectors";
 import { connect } from "react-redux";
-import { setShowSorting } from "../../redux/sorting/sorting.actions";
+import { setItemsToSortCount } from "../../redux/sorting/sorting.actions";
 import { createStructuredSelector } from "reselect";
 
 const withSorting = (WrappedComponent) => {
   const WithSortingComponent = ({
     collection,
     sortType,
-    setShowSorting,
+    setItemsToSortCount,
     ...otherProps
   }) => {
     const sortedCollection = sortCollectionsByType(sortType, collection);
 
     useEffect(() => {
-      setShowSorting(!!collection.length);
-    }, [collection.length, setShowSorting]);
+      setItemsToSortCount(collection.length);
+    }, [collection.length, setItemsToSortCount]);
 
     return <WrappedComponent collection={sortedCollection} {...otherProps} />;
   };
@@ -29,7 +29,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setShowSorting: (showSorting) => dispatch(setShowSorting(showSorting)),
+  setItemsToSortCount: (itemsToSortCount) =>
+    dispatch(setItemsToSortCount(itemsToSortCount)),
 });
 
 export default withSorting;
