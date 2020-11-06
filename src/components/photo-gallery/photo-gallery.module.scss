@@ -1,0 +1,38 @@
+@import "../../globals/styles/utils.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid $color-gray;
+  padding: 1rem;
+}
+
+.mainImageWrapper {
+  width: 350px;
+  text-align: center;
+}
+
+.mainImage {
+  max-height: 350px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.extraImagesContainer {
+  display: flex;
+  border: 1px solid $color-gray;
+}
+
+.extraImage {
+  width: 100px;
+  height: 80px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    border-right: 1px solid $color-gray;
+  }
+}
