@@ -1,0 +1,26 @@
+@import "../../globals/styles/utils.scss";
+
+.container {
+  border: 1px solid $color-gray;
+  display: flex;
+}
+
+.btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-gray-dark;
+}
+
+.count {
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+  border-left: 1px solid $color-gray;
+  border-right: 1px solid $color-gray;
+}
