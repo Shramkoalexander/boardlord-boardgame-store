@@ -1,0 +1,34 @@
+@import "../../globals/styles/utils.scss";
+
+%titleContainer {
+  background-color: $color-gray;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.titleToggle {
+  @extend %titleContainer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleToggleOff {
+  @extend %titleContainer;
+}
+
+.titleText {
+  font-size: 1.4rem;
+  margin: 0;
+  text-transform: capitalize;
+  user-select: none;
+}
+
+.arrowIcon {
+  transition: transform $transition-time;
+}
+
+.arrowIconExpanded {
+  transform: rotate(180deg);
+}
