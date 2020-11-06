@@ -1,0 +1,39 @@
+@import "../../globals/styles/utils.scss";
+
+.group {
+  position: relative;
+  input[type="password"] {
+    letter-spacing: 0.3em;
+  }
+}
+
+%inputBase {
+  background-color: #fff;
+  padding: 0.5rem 1rem;
+  display: block;
+  width: 100%;
+  border: 1px solid $color-gray;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.input {
+  @extend %inputBase;
+}
+
+.inputError {
+  @extend %inputBase;
+
+  border-color: $color-danger;
+}
+
+.label {
+  margin-bottom: 0.5rem;
+}
+
+.errorMessage {
+  color: $color-danger;
+  font-size: 0.8rem;
+}
