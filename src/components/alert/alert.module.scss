@@ -1,0 +1,9 @@
+@import "../../globals/styles/utils.scss";
+
+.errorMessage {
+  border: 1px solid $color-danger;
+  width: 100%;
+  padding: 1rem 0;
+  color: $color-danger;
+  text-align: center;
+}
