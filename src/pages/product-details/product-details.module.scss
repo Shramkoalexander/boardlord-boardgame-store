@@ -1,0 +1,187 @@
+@import "../../globals/styles/utils.scss";
+
+.productTitle {
+  font-size: 1.5rem;
+  text-align: center;
+  position: relative;
+  padding-bottom: 1rem;
+
+  &::after {
+    content: "";
+    position: absolute;
+    border-bottom: 1px solid $color-gray;
+    top: 0;
+    right: 15%;
+    bottom: 0;
+    left: 15%;
+    z-index: -1;
+  }
+}
+
+.propertiesContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: -1rem;
+}
+
+%propertyBase {
+  padding: 1rem 2rem;
+  border: 1px solid $color-gray;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.property {
+  @extend %propertyBase;
+}
+
+.propertyTitle {
+  margin-right: 0.5rem;
+  font-weight: $font-weight-bold;
+}
+
+.tagList {
+  @extend %propertyBase;
+
+  padding: 0.5rem 0;
+}
+
+.purchaseSection {
+  display: flex;
+  margin: 1rem 0;
+  flex-direction: column;
+  margin-bottom: -1rem;
+
+  & > * {
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+  }
+}
+
+.buttonsContainer {
+  display: flex;
+  margin-right: -1rem;
+  justify-content: center;
+
+  & > * {
+    margin-right: 1rem;
+  }
+}
+
+.purchaseButtonWrapper {
+  display: flex;
+  width: 20rem;
+  flex-direction: column;
+  justify-content: center;
+
+  @include media-breakpoint-down(sm) {
+    width: 100%;
+  }
+}
+
+.priceContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: -0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include media-breakpoint-down(sm) {
+    margin-bottom: 1rem;
+  }
+}
+
+.price {
+  font-size: 1.6rem;
+  font-weight: $font-weight-bold;
+  margin-right: 0.5rem;
+}
+
+.oldPrice {
+  text-decoration: line-through;
+  font-weight: inherit;
+  color: $color-gray-dark;
+}
+
+$border: 2px;
+$tabPaddingY: 16px;
+
+.tabContainer {
+  display: flex;
+  box-shadow: 0 (-$border) 0 0 $color-main inset;
+}
+
+%tab {
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  &:not(:last-child) {
+    margin-right: 4px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    flex: 1;
+  }
+}
+
+.tabInactive {
+  @extend %tab;
+  background-color: $color-gray-light;
+  padding-top: $tabPaddingY;
+  padding-bottom: $tabPaddingY;
+  margin-bottom: 6px;
+
+  border: {
+    top: $border solid $color-gray-light;
+  }
+}
+
+.tabActive {
+  @extend %tab;
+
+  padding-top: $tabPaddingY;
+  position: relative;
+  background-color: #fff;
+  padding-bottom: $tabPaddingY + 6px;
+
+  border: {
+    top: $border solid $color-main;
+    left: $border solid $color-main;
+    right: $border solid $color-main;
+  }
+}
+
+.descrContent {
+  position: relative;
+  padding: 2rem;
+  border: $border solid $color-main;
+  border-top: none;
+}
+
+.productContentList {
+  margin: -1rem 0;
+
+  li {
+    position: relative;
+    margin: 1rem 0;
+    padding-left: 25px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 1px;
+      top: 10px;
+      left: 0;
+      display: block;
+      background: $color-black;
+    }
+  }
+}
