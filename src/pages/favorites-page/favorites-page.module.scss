@@ -1,0 +1,12 @@
+@import "../../globals/styles/utils.scss";
+
+.bottomSection {
+  display: flex;
+  padding-top: 1.5rem;
+  border-top: 1px solid $color-main;
+  justify-content: flex-end;
+
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+  }
+}
