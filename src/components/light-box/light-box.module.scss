@@ -1,0 +1,147 @@
+@import "../../globals/styles/utils.scss";
+
+.container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(#000, 0.8);
+  z-index: $z-index-modal;
+  opacity: 0;
+  transition: all $transition-time;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.content {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  &.appearDone {
+    .thumbnailActive {
+      opacity: 1;
+      transition: opacity $transition-time;
+    }
+  }
+
+  &.enterDone {
+    .thumbnailActive {
+      opacity: 1;
+      transition: opacity $transition-time;
+    }
+  }
+
+  &.exit {
+    .thumbnailActive {
+      opacity: 1;
+    }
+    .currentImage {
+      opacity: 1;
+    }
+  }
+
+  &.exitActive {
+    .thumbnailActive {
+      opacity: 0.5;
+      transition: opacity $transition-time;
+    }
+    .currentImage {
+      opacity: 0;
+      transition: opacity $transition-time;
+    }
+  }
+}
+
+$thumbnailsHeight: 100px;
+$gutter: 50px;
+
+.currentImageContainer {
+  position: relative;
+  height: 75vh;
+  width: 100vw;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.currentImage {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+.thumbnailsContainer {
+  display: flex;
+  background-color: #000;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 80px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+%controlIcon {
+  color: #fff;
+  background-color: #000;
+  width: 45px;
+  height: 45px;
+}
+
+%arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include media-breakpoint-down(md) {
+    display: none;
+  }
+}
+
+.arrowLeft {
+  @extend %controlIcon;
+  @extend %arrow;
+
+  left: 0;
+}
+
+.arrowRight {
+  @extend %controlIcon;
+  @extend %arrow;
+
+  right: 0;
+}
+
+.closeBtn {
+  @extend %controlIcon;
+
+  position: fixed;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeIcon {
+  font-size: 2rem;
+}
