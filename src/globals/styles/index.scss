@@ -1,0 +1,50 @@
+@import "~bootstrap/scss/bootstrap";
+
+@import "../../globals/styles/utils.scss";
+
+* {
+  font-family: "Montserrat", sans-serif;
+  font-weight: $font-weight-medium;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+ul {
+  margin-bottom: 0;
+  margin-left: 0;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+a {
+  color: $color-black;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+    color: $color-black;
+  }
+}
+
+button {
+  background-color: transparent;
+  outline: none;
+  color: $color-black;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: block;
+
+  &:focus {
+    outline: none;
+  }
+}
