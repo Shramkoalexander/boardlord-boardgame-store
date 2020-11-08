@@ -1,3 +1,22 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
+
+$color-main: #f9cf98;
+$color-black: #333;
+$color-danger: #f50035;
+
+$color-gray-dark: #aaa;
+$color-gray: #ddd;
+$color-gray-light: #eee;
+
+$color-google: #4c8bf5;
+
+$transition-time: 200ms;
+
+$font-weight-medium: 500;
+$font-weight-bold: 600;
+
+$z-index-dropdown: 1000;
+$z-index-fixed: 1300;
+$z-index-modal: 2000;
