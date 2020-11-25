@@ -27,7 +27,10 @@
 
 .favoriteWrapperInvisible {
   @extend %favoriteWrapperBase;
-  opacity: 0;
+
+  @media (hover: hover) {
+    opacity: 0;
+  }
 }
 
 .container:hover {
