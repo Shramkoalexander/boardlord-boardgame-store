@@ -64,6 +64,7 @@
 .menuItem {
   font-size: 1.5rem;
   border-bottom: 1px solid $color-gray;
+  text-align: center;
 
   a {
     display: block;
@@ -76,6 +77,10 @@
     a {
       color: white;
     }
+  }
+
+  @include media-breakpoint-up(sm) {
+    text-align: left;
   }
 }
 
