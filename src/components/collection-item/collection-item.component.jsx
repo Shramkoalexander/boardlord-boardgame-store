@@ -20,13 +20,7 @@ function CollectionItem({ item, currency, isItemFavorite }) {
         />
         <Tag type={tagTypes.NEW} show={isNew(item.published)} />
       </div>
-      <div
-        className={
-          isItemFavorite
-            ? styles.favoriteWrapper
-            : styles.favoriteWrapperInvisible
-        }
-      >
+      <div className={styles.favoriteWrapper}>
         <FavoriteIcon item={item} />
       </div>
 

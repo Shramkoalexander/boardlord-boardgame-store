@@ -14,27 +14,11 @@
   }
 }
 
-%favoriteWrapperBase {
+.favoriteWrapper {
   position: absolute;
   left: -10px;
   top: -10px;
   transition: opacity $transition-time;
-}
-
-.favoriteWrapper {
-  @extend %favoriteWrapperBase;
-}
-
-.favoriteWrapperInvisible {
-  @extend %favoriteWrapperBase;
-  opacity: 0;
-}
-
-.container:hover {
-  & .favoriteWrapper,
-  & .favoriteWrapperInvisible {
-    opacity: 1;
-  }
 }
 
 .tagList {
