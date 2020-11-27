@@ -117,20 +117,24 @@ $tabPaddingY: 16px;
 }
 
 %tab {
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  flex: 1;
 
   &:not(:last-child) {
     margin-right: 4px;
   }
 
-  @include media-breakpoint-down(sm) {
-    flex: 1;
+  @include media-breakpoint-up(md) {
+    flex: none;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
 .tabInactive {
   @extend %tab;
+
   background-color: $color-gray-light;
   padding-top: $tabPaddingY;
   padding-bottom: $tabPaddingY;
