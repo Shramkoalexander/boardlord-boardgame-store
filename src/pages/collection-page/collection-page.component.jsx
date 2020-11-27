@@ -121,9 +121,7 @@ function CollectionPage({
               <SectionTitle />
               <Sorting />
 
-              <div>
-                <CollectionList collection={collection} />
-              </div>
+              <CollectionList collection={collection} />
 
               <Pagination />
             </div>
