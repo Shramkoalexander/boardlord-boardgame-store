@@ -11,9 +11,9 @@ function CollectionList({ collection, currency }) {
   return (
     <>
       {collection.length > 0 ? (
-        <div className="row no-gutters row-cols-1 row-cols-md-2 row-cols-lg-3 mx-n3">
+        <div className="row no-gutters row-cols-1 row-cols-md-2 row-cols-lg-3 mx-sm-n3">
           {collection.map((item) => (
-            <div className="col p-3" key={uniqid()}>
+            <div className="col px-sm-3 py-3" key={uniqid()}>
               <CollectionItem item={item} currency={currency} />
             </div>
           ))}
