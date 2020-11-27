@@ -32,7 +32,12 @@
 
 .modal {
   height: 100%;
-  width: 22rem;
+  width: 100vw;
+
+  @include media-breakpoint-up(sm) {
+    width: 22rem;
+  }
+
   background-color: $color-gray-light;
   overflow: auto;
   position: relative;
@@ -57,7 +62,7 @@
 }
 
 .menuItem {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   border-bottom: 1px solid $color-gray;
 
   a {
