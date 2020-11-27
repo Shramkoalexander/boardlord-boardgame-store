@@ -9,8 +9,12 @@
 }
 
 .mainImageWrapper {
-  width: 350px;
+  width: 100%;
   text-align: center;
+
+  @include media-breakpoint-up(md) {
+    width: 350px;
+  }
 }
 
 .mainImage {
