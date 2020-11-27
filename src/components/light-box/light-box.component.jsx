@@ -14,6 +14,7 @@ import {
   setCurrentImageIndex,
 } from "../../redux/light-box/light-box.actions";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
+import { useState } from "react";
 
 function LightBox({
   imageURLs,
@@ -24,6 +25,9 @@ function LightBox({
   currentImageIndex,
   hideLightBox,
 }) {
+  const [isMoving, setIsMoving] = useState(false);
+  const [initialTouchPosition, setInitialTouchPosition] = useState(null);
+
   const circleForward = useCallback(() => {
     if (currentImageIndex < imageURLs.length - 1) {
       increaseCurrentImageIndex();
@@ -50,7 +54,7 @@ function LightBox({
     setCurrentImageIndex,
   ]);
 
-  const onKeyDownHandler = useCallback(
+  const handleKeyDown = useCallback(
     (e) => {
       switch (e.keyCode) {
         case 37: // LEFT arrow
@@ -88,12 +92,12 @@ function LightBox({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", onKeyDownHandler);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener("keydown", onKeyDownHandler);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onKeyDownHandler]);
+  }, [handleKeyDown]);
 
   const nodesToIgnoreEscaping = [];
 
@@ -103,22 +107,52 @@ function LightBox({
 
   const handleClick = useCallback(
     (e) => {
-      if (!nodesToIgnoreEscaping.some((node) => node.contains(e.target))) {
+      if (
+        !nodesToIgnoreEscaping.some((node) => node.contains(e.target)) &&
+        !isMoving
+      ) {
         hideLightBox();
       }
+      setIsMoving(false);
     },
-    [hideLightBox, nodesToIgnoreEscaping]
+    [hideLightBox, isMoving, nodesToIgnoreEscaping]
   );
+
+  const handleTouchMove = useCallback(
+    (e) => {
+      if (!isMoving) {
+        setIsMoving(true);
+        const touchX = e.changedTouches[0].pageX;
+        let diff = initialTouchPosition - touchX;
+
+        if (diff > 0) {
+          circleForward();
+        } else {
+          circleBackward();
+        }
+      }
+    },
+    [circleBackward, circleForward, initialTouchPosition, isMoving]
+  );
+
+  const handleTouchStart = useCallback((e) => {
+    const touchX = e.changedTouches[0].pageX;
+    setInitialTouchPosition(touchX);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("click", handleClick, true);
     window.addEventListener("touchend", handleClick, true);
+    window.addEventListener("touchmove", handleTouchMove, true);
+    window.addEventListener("touchstart", handleTouchStart, true);
 
     return () => {
       window.removeEventListener("click", handleClick, true);
       window.removeEventListener("touchend", handleClick, true);
+      window.removeEventListener("touchmove", handleTouchMove, true);
+      window.removeEventListener("touchstart", handleTouchStart, true);
     };
-  }, [handleClick]);
+  }, [handleClick, handleTouchStart, handleTouchMove]);
 
   return (
     <CSSTransition
