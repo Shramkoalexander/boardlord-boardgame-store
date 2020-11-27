@@ -66,10 +66,9 @@
 
 .buttonsContainer {
   display: flex;
-  margin-right: -1rem;
   justify-content: center;
 
-  & > * {
+  & > *:not(:last-child) {
     margin-right: 1rem;
   }
 }
@@ -89,7 +88,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: -0.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
 
