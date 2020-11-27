@@ -126,9 +126,9 @@ function LightBox({
         let diff = initialTouchPosition - touchX;
 
         if (diff > 0) {
-          circleForward();
-        } else {
           circleBackward();
+        } else {
+          circleForward();
         }
       }
     },
