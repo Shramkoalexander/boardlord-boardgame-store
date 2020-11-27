@@ -3,13 +3,11 @@ import styles from "./collection-item.module.scss";
 import { Link } from "react-router-dom";
 import PurchaseButton from "../purchase-button/purchase-button.component";
 import FavoriteIcon from "../favorite-icon/favorite-icon.component";
-import { connect } from "react-redux";
-import { selectIsItemFavorite } from "../../redux/favorites/favorites.selectors";
 import { getFormatedPrice } from "../../redux/shop/shop.utils";
 import { hasDiscount, isNew, isTop, tagTypes } from "../tag/tag.utils";
 import Tag from "../tag/tag.component";
 
-function CollectionItem({ item, currency, isItemFavorite }) {
+function CollectionItem({ item, currency }) {
   return (
     <div className={styles.container}>
       <div className={styles.tagList}>
@@ -65,8 +63,4 @@ function CollectionItem({ item, currency, isItemFavorite }) {
   );
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  isItemFavorite: selectIsItemFavorite(ownProps.item)(state),
-});
-
-export default connect(mapStateToProps)(CollectionItem);
+export default CollectionItem;
