@@ -5,7 +5,7 @@ const initialState = {
   debouncedPriceValues: [0, 0],
   priceValues: [0, 0],
   priceLimits: [0, 0],
-  gameTime: filterValues.gameTime.UNDEF,
+  gameTime: filterValues.gameTime.UNSET,
   playersCount: filterValues.playersCount.ALL,
   isInStock: true,
   showFilter: true,

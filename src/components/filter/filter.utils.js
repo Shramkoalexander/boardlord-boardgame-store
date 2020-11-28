@@ -2,7 +2,7 @@ import { getDiscountedPriceIfExist } from "../../redux/shop/shop.utils";
 
 export const filterValues = {
   gameTime: {
-    UNDEF: "unset",
+    UNSET: "unset",
     SHORT: "short",
     MEDIUM: "medium",
     LONG: "long",

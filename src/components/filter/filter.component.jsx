@@ -44,7 +44,7 @@ function Filter({
           <h2 className={styles.sectionTitle}>Время партии:</h2>
           <OptionSelector
             options={[
-              { value: filterValues.gameTime.UNDEF, text: "Не указано" },
+              { value: filterValues.gameTime.UNSET, text: "Не указано" },
               { value: filterValues.gameTime.SHORT, text: "Короткая" },
               { value: filterValues.gameTime.MEDIUM, text: "Средняя" },
               { value: filterValues.gameTime.LONG, text: "Долгая" },
@@ -66,8 +66,8 @@ function Filter({
           <OptionSelector
             options={[
               { value: filterValues.playersCount.ALL, text: "Все" },
-              ...range(1, filterValues.playersCount.COUNT + 1).map((item) => {
-                return { value: item, text: item };
+              ...range(1, filterValues.playersCount.COUNT + 1).map((count) => {
+                return { value: count, text: count };
               }),
 
               {
