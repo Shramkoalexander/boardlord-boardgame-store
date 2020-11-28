@@ -71,17 +71,17 @@ function Pagination({
         >
           <span className="material-icons">chevron_left</span>
         </button>
-        {range(firstVisiblePage, lastVisiblePage + 1).map((index) => (
+        {range(firstVisiblePage, lastVisiblePage + 1).map((pageNumber) => (
           <button
             className={`${styles.pageBtn} ${
-              currentPage === index ? styles.pageBtnActive : ""
+              currentPage === pageNumber ? styles.pageBtnActive : ""
             }`}
             key={uniqid()}
             onClick={() => {
-              onPageChanged(index);
+              onPageChanged(pageNumber);
             }}
           >
-            {index}
+            {pageNumber}
           </button>
         ))}
         <button
