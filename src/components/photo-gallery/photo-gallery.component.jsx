@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import uniqid from "uniqid";
 import styles from "./photo-gallery.module.scss";
-
 import LightBox from "../light-box/light-box.component";
 import { connect } from "react-redux";
 import {
   showLightBox,
   setCurrentImageIndex,
 } from "../../redux/light-box/light-box.actions";
+import range from "lodash.range";
 
 function PhotoGallery({ imageName, showLightBox, setCurrentImageIndex }) {
   const imagesCount = 4;
@@ -22,17 +22,16 @@ function PhotoGallery({ imageName, showLightBox, setCurrentImageIndex }) {
   useEffect(() => {
     try {
       const URLsToAdd = [];
-      const url = require(`../../assets/images/boardgames/${imageName}/${imageName}.jpg`);
-      URLsToAdd.push(url);
-      for (let i = 1; i < imagesCount; i++) {
+      const mainImageUrl = require(`../../assets/images/boardgames/${imageName}/${imageName}.jpg`);
+      URLsToAdd.push(mainImageUrl);
+      range(1, imagesCount).forEach((imgNumber) => {
         try {
-          const url = require(`../../assets/images/boardgames/${imageName}/${imageName}_${i}.jpg`);
+          const url = require(`../../assets/images/boardgames/${imageName}/${imageName}_${imgNumber}.jpg`);
           URLsToAdd.push(url);
         } catch (error) {
           console.error(error.message);
-          continue;
         }
-      }
+      });
 
       setImageURLs(URLsToAdd);
     } catch (error) {
