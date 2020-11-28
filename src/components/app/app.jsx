@@ -49,7 +49,7 @@ function App({
       <Switch>
         <Route
           exact
-          path={["/", "/about", "/discounts", "/delivery", "/payment"]}
+          path={["/", "/about", "/discounts", "/delivery", "/payment"]} // all main menu paths redirects to shop page intentionaly because this is not a real project
           render={() => <Redirect to="/shop" />}
         />
         <Route path="/shop">

@@ -31,7 +31,7 @@ function EscapeOutsideWrapper({
 
   const handlePressEscape = useCallback(
     (e) => {
-      if (e.keyCode === 27) onEscapeOutside();
+      if (e.keyCode === 27) onEscapeOutside(); // Esc key
     },
     [onEscapeOutside]
   );
