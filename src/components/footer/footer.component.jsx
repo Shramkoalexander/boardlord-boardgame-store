@@ -15,7 +15,7 @@ import { selectMainMenuDirectory } from "../../redux/directories/directories.sel
 
 function Footer({ mainMenuDirectory }) {
   return (
-    <div className={styles.container}>
+    <footer className={styles.container}>
       <div className={styles.topSection}>
         <div className="container-lg">
           <ul className={styles.navList}>
@@ -75,7 +75,7 @@ function Footer({ mainMenuDirectory }) {
           <div className={styles.companyInfo}>&copy; BoardLords, 2020-2020</div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }
 
