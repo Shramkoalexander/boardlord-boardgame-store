@@ -191,6 +191,7 @@ function Search({
               placeholder="Найти ..."
               className={styles.searchField}
               value={searchFieldInput}
+              aria-label="поле поиска"
             />
 
             <div className={styles.buttonsWrapper}>
