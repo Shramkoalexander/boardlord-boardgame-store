@@ -100,7 +100,7 @@ function Header({
   ]);
 
   return (
-    <>
+    <header>
       <FixedHeaderWrapper>
         <div className={`container-lg d-sm-none ${styles.extraSection}`}>
           <div className="d-flex justify-content-center py-2">
@@ -205,7 +205,7 @@ function Header({
           </div>
         </div>
 
-        <div className={`d-none d-lg-block ${styles.bottomSection}`}>
+        <nav className={`d-none d-lg-block ${styles.bottomSection}`}>
           <div className="container-lg">
             <div className="d-flex align-items-center justify-content-center position-relative">
               <ul className={`${styles.navList} d-flex`}>
@@ -223,12 +223,12 @@ function Header({
               </ul>
             </div>
           </div>
-        </div>
+        </nav>
       </FixedHeaderWrapper>
 
       <SidebarMenu />
       {isSearchModalVisible && <Search modal={true} />}
-    </>
+    </header>
   );
 }
 
