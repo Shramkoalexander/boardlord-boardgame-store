@@ -1,3 +1,5 @@
+## Boardlord | boardgame store
+
 ### Сайт проекта:
 https://boardlord.web.app/
 
