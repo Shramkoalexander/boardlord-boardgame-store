@@ -1,6 +1,5 @@
 import { createSelector } from "reselect";
-import { hasDiscount } from "../../components/tag/tag.utils";
-import { getDiscountedPriceIfExist } from "../shop/shop.utils";
+import { getDiscountedPriceIfExist, hasDiscount } from "../shop/shop.utils";
 
 export const selectCart = (state) => state.cart;
 

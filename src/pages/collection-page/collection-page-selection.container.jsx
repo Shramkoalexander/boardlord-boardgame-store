@@ -4,7 +4,7 @@ import CollectionPage from "./collection-page.component";
 import { selectCollection } from "../../redux/shop/shop.selectors";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { hasDiscount, isNew, isTop } from "../../components/tag/tag.utils";
+import { hasDiscount, isNew, isTop } from "../../redux/shop/shop.utils";
 import PageNotFound from "../page-not-found/page-not-found.component";
 
 function CollectionPageSelectionContainer({

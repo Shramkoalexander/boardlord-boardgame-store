@@ -3,8 +3,13 @@ import styles from "./collection-item.module.scss";
 import { Link } from "react-router-dom";
 import PurchaseButton from "../purchase-button/purchase-button.component";
 import FavoriteIcon from "../favorite-icon/favorite-icon.component";
-import { getFormatedPrice } from "../../redux/shop/shop.utils";
-import { hasDiscount, isNew, isTop, tagTypes } from "../tag/tag.utils";
+import {
+  getFormatedPrice,
+  hasDiscount,
+  isNew,
+  isTop,
+} from "../../redux/shop/shop.utils";
+import { tagTypes } from "../tag/tag.utils";
 import Tag from "../tag/tag.component";
 
 function CollectionItem({ item, currency }) {

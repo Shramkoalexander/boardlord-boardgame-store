@@ -14,13 +14,13 @@ import FavoriteIcon from "../../components/favorite-icon/favorite-icon.component
 import ReturnToShop from "../../components/return-to-shop/return-to-shop.component";
 import withSpinner from "../../components/spinner/withSpinner.component";
 import flowRight from "lodash.flowright";
-import { getFormatedPrice } from "../../redux/shop/shop.utils";
 import {
+  getFormatedPrice,
   hasDiscount,
   isNew,
   isTop,
-  tagTypes,
-} from "../../components/tag/tag.utils";
+} from "../../redux/shop/shop.utils";
+import { tagTypes } from "../../components/tag/tag.utils";
 import Tag from "../../components/tag/tag.component";
 import PageNotFound from "../page-not-found/page-not-found.component";
 import uniqid from "uniqid";

@@ -16,6 +16,7 @@ import {
 import { createStructuredSelector } from "reselect";
 import { Link } from "react-router-dom";
 import {
+  hasDiscount,
   getDiscountedPriceIfExist,
   getFormatedPrice,
 } from "../../redux/shop/shop.utils";
@@ -24,7 +25,6 @@ import { selectCurrency } from "../../redux/shop/shop.selectors";
 import { animateScroll as scroll } from "react-scroll";
 import { useEffect } from "react";
 import ReturnToShop from "../../components/return-to-shop/return-to-shop.component";
-import { hasDiscount } from "../../components/tag/tag.utils";
 import ButtonCustom from "../../components/button-custom/button-custom.component";
 import { buttonStyleTypes } from "../../components/button-custom/button-custom.utils";
 import QuantitySelector from "../../components/quantity-selector/quantity-selector.component";
