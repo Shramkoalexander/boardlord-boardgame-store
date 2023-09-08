@@ -1,29 +1,33 @@
 ## Boardlord | boardgame store
 
-### Сайт проекта:
+### Project Website:
 https://boardlord.web.app/
 
-### Используемые технологии:
-- HTML / CSS (SCSS, CSS modules, React Transition Group) / JavaScript
-- React / Redux, reselect, saga
+### Technologies Used:
+- HTML / CSS (SCSS, CSS modules, React Transition Group)
+- JavaScript
+- React / Redux, Reselect, Saga
 - Firebase
-- Bootstrap (layout)
+- Bootstrap (for layout)
 - Git
 
+### Project Overview:
+This project serves as a simplified online store for board games and is built as a Single Page Application (SPA). It features basic search functionality with debounce, filtering, pagination, and product sorting. The website also includes a shopping cart and allows users to add items to their favorites list. User authentication and authorization are implemented.
 
-### Краткое описание проекта
-Этот проект представляет из себя упрощенный интернет-магазин настольных игр. Это SPA. В нем реализован простой поиск, с применением debounce, фильтрация, пагинация и сортировка товаров. Создана корзина, возможность добавления товаров в список избранных. База данных, аутентентификация, авторизация пользователей. 
+### Skills Demonstrated:
 
-### На примере данного проекта я продемонстрировал следующие навыки:
+- **Proficiency in React:** Utilization of React Hooks, custom hooks, and Higher-Order Components (HOCs).
 
-- Умение работать с React, использование React Hooks, создание кастомных хуков, создание собственных HOC компонентов
+- **State Management:** Use of Redux for state management, optimized with the Reselect library.
 
-- Стейт менеджмент с помощью Redux, для более оптимизированной работы также использовал библиотеку reselect. Для работы с асинхронными запросами, такими как Google аутентификация, обращение к базе данных, использовал Redux-saga, с ее помощью реализовал живое взаимодействие с базой данных - при обновлении данных в базе, мой сайт мгновенно реагирует на изменения.
+- **Asynchronous Operations:** Employed Redux-Saga for handling asynchronous requests, including Google authentication and database calls, facilitating real-time interaction with the database.
 
-- В качестве базы данных использовал Firebase Firestore. В базе данных содержатся данные пользователей, содержимое корзины пользователей, список избранных товаров, а также коллекция игр магазина в общем. Создал авторизацию с помощью правил безопасности в Firestore, чтобы пользователи смогли иметь доступ только к своим товарам, причем они должны быть зарегистрированными на сайте.
+- **Database & Authorization:** Firebase Firestore serves as the database to store user data, cart contents, favorite items, and the general product catalog.
+Implemented Firestore security rules to ensure that users can only access their own data and must be registered on the site to do so.
 
-- Для улучшения user experience для незарегистрированных пользователей, реализовал хранение списка покупок и избранного в браузере, чтобы не терять их в случае, если сессия прервется
+- **Enhanced User Experience:** For unregistered users, the shopping list and favorites are stored in the browser to prevent data loss in case the session is interrupted.
 
-- Для стилизации сайта использовал css modules, SCSS, для анимации реакт компонентов использовал React Transition Group). Для layout сайта использовал сетку Bootstrap.
+- **Styling & Layout:** Used CSS modules and SCSS for styling, and React Transition Group for component animations.
+Utilized Bootstrap's grid system for website layout.
 
-- Deployment сайта делал с помощью хостинга firebase
+- **Deployment:** The website was deployed using Firebase hosting.
