@@ -123,20 +123,6 @@ function LightBox({
     setInitialTouchPosition(touchX);
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("click", handleClick, true);
-    window.addEventListener("touchend", handleClick, true);
-    window.addEventListener("touchmove", handleTouchMove, true);
-    window.addEventListener("touchstart", handleTouchStart, true);
-
-    return () => {
-      window.removeEventListener("click", handleClick, true);
-      window.removeEventListener("touchend", handleClick, true);
-      window.removeEventListener("touchmove", handleTouchMove, true);
-      window.removeEventListener("touchstart", handleTouchStart, true);
-    };
-  }, [handleClick, handleTouchStart, handleTouchMove]);
-
   return (
     <CSSTransition
       in={open}
@@ -188,6 +174,9 @@ function LightBox({
                   alt="board game"
                   data-id={currentImageIndex}
                   className={styles.currentImage}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleClick}
                 />
 
                 <button
