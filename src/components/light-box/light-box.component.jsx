@@ -1,57 +1,40 @@
-import React, { useCallback, useEffect } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import styles from "./light-box.module.scss";
 import uniqid from "uniqid";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import {
-  selectIsLightBoxVisible,
-  selectCurrentImageIndex,
-} from "../../redux/light-box/light-box.selectors";
-import {
-  hideLightBox,
-  increaseCurrentImageIndex,
-  decreaseCurrentImageIndex,
-  setCurrentImageIndex,
-} from "../../redux/light-box/light-box.actions";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
-import { useState } from "react";
+import {CSSTransition, SwitchTransition} from "react-transition-group";
 
 function LightBox({
   imageURLs,
-  isLightBoxVisible,
-  increaseCurrentImageIndex,
-  decreaseCurrentImageIndex,
-  setCurrentImageIndex,
+  open,
+  onClose,
+  onChangeImage,
   currentImageIndex,
-  hideLightBox,
 }) {
   const [isMoving, setIsMoving] = useState(false);
   const [initialTouchPosition, setInitialTouchPosition] = useState(null);
 
   const circleForward = useCallback(() => {
     if (currentImageIndex < imageURLs.length - 1) {
-      increaseCurrentImageIndex();
-    } else {
-      setCurrentImageIndex(0);
+      onChangeImage(currentImageIndex + 1);
+    } else  {
+      onChangeImage(0)
     }
   }, [
     currentImageIndex,
     imageURLs.length,
-    increaseCurrentImageIndex,
-    setCurrentImageIndex,
+    onChangeImage,
   ]);
 
   const circleBackward = useCallback(() => {
     if (currentImageIndex > 0) {
-      decreaseCurrentImageIndex();
+      onChangeImage(currentImageIndex - 1 );
     } else {
-      setCurrentImageIndex(imageURLs.length - 1);
+      onChangeImage(imageURLs.length - 1);
     }
   }, [
     currentImageIndex,
-    decreaseCurrentImageIndex,
     imageURLs.length,
-    setCurrentImageIndex,
+    onChangeImage,
   ]);
 
   const handleKeyDown = useCallback(
@@ -75,20 +58,20 @@ function LightBox({
 
           break;
         case 27: // ESC
-          hideLightBox();
+          onClose();
           break;
 
         default:
           break;
       }
     },
-    [circleBackward, circleForward, hideLightBox, imageURLs.length]
+    [circleBackward, circleForward, onClose, imageURLs.length]
   );
 
   const handleThumbnailClick = (e) => {
     const newIndex = parseInt(e.currentTarget.dataset.id);
 
-    if (newIndex !== currentImageIndex) setCurrentImageIndex(newIndex);
+    if (newIndex !== currentImageIndex) onChangeImage(newIndex);
   };
 
   useEffect(() => {
@@ -111,11 +94,11 @@ function LightBox({
         !nodesToIgnoreEscaping.some((node) => node.contains(e.target)) &&
         !isMoving
       ) {
-        hideLightBox();
+        onClose();
       }
       setIsMoving(false);
     },
-    [hideLightBox, isMoving, nodesToIgnoreEscaping]
+    [onClose, isMoving, nodesToIgnoreEscaping]
   );
 
   const handleTouchMove = useCallback(
@@ -156,7 +139,7 @@ function LightBox({
 
   return (
     <CSSTransition
-      in={isLightBoxVisible}
+      in={open}
       unmountOnExit
       timeout={{
         appear: 0,
@@ -225,7 +208,7 @@ function LightBox({
 
               <button
                 className={styles.closeBtn}
-                onClick={hideLightBox}
+                onClick={onClose}
                 ref={addNodeToIgnoreEscaping}
               >
                 <span className={`material-icons ${styles.closeIcon}`}>
@@ -256,17 +239,4 @@ function LightBox({
     </CSSTransition>
   );
 }
-
-const mapStateToProps = createStructuredSelector({
-  isLightBoxVisible: selectIsLightBoxVisible,
-  currentImageIndex: selectCurrentImageIndex,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  hideLightBox: () => dispatch(hideLightBox()),
-  increaseCurrentImageIndex: () => dispatch(increaseCurrentImageIndex()),
-  decreaseCurrentImageIndex: () => dispatch(decreaseCurrentImageIndex()),
-  setCurrentImageIndex: (newIndex) => dispatch(setCurrentImageIndex(newIndex)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LightBox);
+export default LightBox;

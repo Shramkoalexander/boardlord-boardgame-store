@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import uniqid from "uniqid";
 import styles from "./photo-gallery.module.scss";
 import LightBox from "../light-box/light-box.component";
-import { connect } from "react-redux";
-import {
-  showLightBox,
-  setCurrentImageIndex,
-} from "../../redux/light-box/light-box.actions";
 import range from "lodash.range";
 
-function PhotoGallery({ imageName, showLightBox, setCurrentImageIndex }) {
+function PhotoGallery({ imageName}) {
   const imagesCount = 4;
 
   const [imageURLs, setImageURLs] = useState([]);
-
+  const [isLightBoxVisible, setIsLightBoxVisible] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const handleOnClick = (e) => {
-    showLightBox();
+    setIsLightBoxVisible(true);
     setCurrentImageIndex(parseInt(e.currentTarget.dataset.id));
   };
 
@@ -66,14 +62,9 @@ function PhotoGallery({ imageName, showLightBox, setCurrentImageIndex }) {
           ))}
         </div>
       </div>
-      {<LightBox imageURLs={imageURLs} />}
+      {<LightBox open={isLightBoxVisible} imageURLs={imageURLs} onClose={()=> {setIsLightBoxVisible(false)}} currentImageIndex={currentImageIndex} onChangeImage={(index)=> {
+        setCurrentImageIndex(index)}}/>}
     </>
   );
 }
-
-const mapDispatchToProps = (dispatch) => ({
-  showLightBox: () => dispatch(showLightBox()),
-  setCurrentImageIndex: (newIndex) => dispatch(setCurrentImageIndex(newIndex)),
-});
-
-export default connect(null, mapDispatchToProps)(PhotoGallery);
+export default PhotoGallery;
