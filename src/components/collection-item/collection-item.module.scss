@@ -16,15 +16,15 @@
 
 .favoriteWrapper {
   position: absolute;
-  left: -10px;
+  right: -10px;
   top: -10px;
   transition: opacity $transition-time;
 }
 
 .tagList {
   position: absolute;
+  left: -10px;
   top: -10px;
-  right: -10px;
   display: flex;
   flex-direction: column;
   align-items: center;
