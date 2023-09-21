@@ -21,9 +21,9 @@
 
 @keyframes spin {
   from {
-    transform: rotateY(0);
+    transform: rotateY(0deg);
   }
   to {
-    transform: rotateY(360deg);
+    transform: rotateY(-360deg);
   }
 }

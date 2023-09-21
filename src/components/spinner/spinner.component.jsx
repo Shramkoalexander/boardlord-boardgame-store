@@ -5,8 +5,10 @@ import Logo from "../logo/logo.component";
 function Spinner() {
   return (
     <div className={styles.overlay}>
-      <div className={styles.spinner}>
-        <Logo />
+      <div style={{position: "fixed"}}>
+        <div className={styles.spinner}>
+          <Logo />
+        </div>
       </div>
     </div>
   );
