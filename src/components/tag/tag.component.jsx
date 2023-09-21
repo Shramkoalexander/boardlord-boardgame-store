@@ -12,7 +12,7 @@ function Tag({ type, show }) {
           className={styles.tag}
           style={{
             backgroundImage: `url(${require("../../assets/images/tags/discount-tag.svg")})`,
-            transform: `rotate(-45deg)`,
+            // transform: `rotate(45deg)`,
             display: show ? "block" : "none",
           }}
         ></div>
@@ -36,7 +36,7 @@ function Tag({ type, show }) {
           className={styles.tag}
           style={{
             backgroundImage: `url(${require("../../assets/images/tags/new-tag.svg")})`,
-            transform: `rotate(30deg)`,
+            // transform: `rotate(-30deg)`,
             display: show ? "block" : "none",
           }}
         ></div>
