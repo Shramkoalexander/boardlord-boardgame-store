@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import uniqid from "uniqid";
 import styles from "./photo-gallery.module.scss";
 import LightBox from "../light-box/light-box.component";
 import range from "lodash.range";
@@ -51,7 +50,7 @@ function PhotoGallery({ imageName}) {
         <div className={styles.extraImagesContainer}>
           {imageURLs.slice(1).map((url, index) => (
             <div
-              key={uniqid()}
+              key={url}
               onClick={handleOnClick}
               data-id={index + 1}
               className={styles.extraImage}

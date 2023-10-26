@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
 import styles from "./light-box.module.scss";
-import uniqid from "uniqid";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 
 function LightBox({
@@ -210,7 +209,7 @@ function LightBox({
                   <div
                     onClick={handleThumbnailClick}
                     data-id={index}
-                    key={uniqid()}
+                    key={url}
                     ref={addNodeToIgnoreEscaping}
                     className={`${styles.thumbnail} ${
                       currentImageIndex === index ? styles.thumbnailActive : ""

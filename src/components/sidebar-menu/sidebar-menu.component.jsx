@@ -12,7 +12,6 @@ import {
 } from "../../redux/breakpoints-provider/breakpoints-provider.selectors";
 import { breakpointsDown } from "../breakpoints-provider/breakpoints-provider.utils";
 import { CSSTransition } from "react-transition-group";
-import uniqid from "uniqid";
 import useHistoryChange from "../../custom-hooks/useHistoryChange";
 import { selectMainMenuDirectory } from "../../redux/directories/directories.selectors";
 
@@ -80,7 +79,7 @@ function SidebarMenu({
               </div>
 
               {mainMenuDirectory.map(({ path, title }) => (
-                <div key={uniqid()} className={styles.menuItem}>
+                <div key={path} className={styles.menuItem}>
                   <Link to={`/${path}`}>{title}</Link>
                 </div>
               ))}

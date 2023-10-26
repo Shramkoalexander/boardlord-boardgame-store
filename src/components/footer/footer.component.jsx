@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import uniqid from "uniqid";
 import styles from "./footer.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,7 +19,7 @@ function Footer({ mainMenuDirectory }) {
         <div className="container-lg">
           <ul className={styles.navList}>
             {mainMenuDirectory.map(({ path, title }) => (
-              <li key={uniqid()} className={styles.navItem}>
+              <li key={path} className={styles.navItem}>
                 <Link to={`/${path}`} className={styles.navItemText}>
                   {title}
                 </Link>

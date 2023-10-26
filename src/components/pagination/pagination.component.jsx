@@ -11,7 +11,6 @@ import range from "lodash.range";
 import { createStructuredSelector } from "reselect";
 import styles from "./pagination.module.scss";
 import { animateScroll as scroll } from "react-scroll";
-import uniqid from "uniqid";
 
 function Pagination({
   itemsPerPage,
@@ -76,7 +75,7 @@ function Pagination({
             className={`${styles.pageBtn} ${
               currentPage === pageNumber ? styles.pageBtnActive : ""
             }`}
-            key={uniqid()}
+            key={pageNumber}
             onClick={() => {
               onPageChanged(pageNumber);
             }}

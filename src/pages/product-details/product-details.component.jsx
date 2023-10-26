@@ -23,7 +23,6 @@ import {
 import { tagTypes } from "../../components/tag/tag.utils";
 import Tag from "../../components/tag/tag.component";
 import PageNotFound from "../page-not-found/page-not-found.component";
-import uniqid from "uniqid";
 
 function ProductDetails({ match, collection, currency }) {
   const product = collection.find(
@@ -160,12 +159,12 @@ function ProductDetails({ match, collection, currency }) {
               <div>
                 {activeTab === DESCRIPTION_TAB ? (
                   product.description.map((paragraph, index) => (
-                    <p key={uniqid()}>{paragraph}</p>
+                    <p key={product.id}>{paragraph}</p>
                   ))
                 ) : (
                   <ul className={styles.productContentList}>
                     {product.content.map((listItem, index) => (
-                      <li key={uniqid()}>{listItem}</li>
+                      <li key={product.id}>{listItem}</li>
                     ))}
                   </ul>
                 )}

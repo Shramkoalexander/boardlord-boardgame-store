@@ -20,7 +20,6 @@ import {
 import FixedHeaderWrapper from "../fixed-header-wrapper/fixed-header-wrapper.component";
 import { toggleShowSidebarMenu } from "../../redux/sidebar-menu/sidebar-menu.actions";
 import SidebarMenu from "../sidebar-menu/sidebar-menu.component";
-import uniqid from "uniqid";
 import {
   selectIsSearchModalVisible,
   selectSearchQuery,
@@ -210,7 +209,7 @@ function Header({
             <div className="d-flex align-items-center justify-content-center position-relative">
               <ul className={`${styles.navList} d-flex`}>
                 {mainMenuDirectory.map(({ path, title }) => (
-                  <li key={uniqid()}>
+                  <li key={path}>
                     <NavLink
                       to={`/${path}`}
                       className={styles.navLink}

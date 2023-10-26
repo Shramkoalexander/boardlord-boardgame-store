@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from "react";
 import styles from "./option-selector.module.scss";
 import { useEffect } from "react";
-import uniqid from "uniqid";
 import EscapeOutsideWrapper from "../escape-outside/escape-outside-wrapper.component";
 import useHistoryChange from "../../custom-hooks/useHistoryChange";
 
@@ -107,7 +106,7 @@ function OptionSelector({ options, onChange, disabled = false }) {
           <div className={styles.dropdown}>
             {options.map(({ value, text }, index) => (
               <div
-                key={uniqid()}
+                key={value}
                 name={value}
                 onMouseEnter={() => setCurrentListItemIndex(index)}
                 onMouseLeave={() => resetCurrentListItemIndex()}

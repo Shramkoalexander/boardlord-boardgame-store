@@ -20,7 +20,6 @@ import {
   selectBreakpoints,
 } from "../../redux/breakpoints-provider/breakpoints-provider.selectors";
 import Breadcrumbs from "../../components/breadcrumbs/breadcrumbs.component";
-import uniqid from "uniqid";
 
 function CollectionPage({
   collection,
@@ -56,7 +55,7 @@ function CollectionPage({
                           {other.map(
                             ({ path, title }) =>
                               path === "all-games" && (
-                                <li key={uniqid()}>
+                                <li key={path}>
                                   <NavLink
                                     to={`/shop/${path}`}
                                     exact
@@ -69,7 +68,7 @@ function CollectionPage({
                               )
                           )}
                           {categories.map(({ path, title }) => (
-                            <li key={uniqid()}>
+                            <li key={path}>
                               <NavLink
                                 to={`/shop/category/${path}`}
                                 exact
@@ -85,7 +84,7 @@ function CollectionPage({
                       <div className={styles.sideSectionBox}>
                         <ul className={styles.navLinkList}>
                           {selections.map(({ path, title }) => (
-                            <li key={uniqid()}>
+                            <li key={path}>
                               <NavLink
                                 to={`/shop/selection/${path}`}
                                 exact

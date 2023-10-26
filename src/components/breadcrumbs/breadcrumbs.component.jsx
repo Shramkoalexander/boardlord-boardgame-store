@@ -4,7 +4,6 @@ import styles from "./breadcrumbs.module.scss";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { selectDirectoriesForBreadcrumbs } from "../../redux/directories/directories.selectors";
-import uniqid from "uniqid";
 
 function Breadcrumbs({ directories }) {
   const location = useLocation();
@@ -24,13 +23,13 @@ function Breadcrumbs({ directories }) {
         if (currentPath) {
           if (isLast) {
             return (
-              <div key={uniqid()} className={styles.active}>
+              <div key={path} className={styles.active}>
                 <span className={styles.title}>{currentPath.title}</span>
               </div>
             );
           } else {
             return (
-              <div className={styles.nonActive} key={uniqid()}>
+              <div className={styles.nonActive} key={path}>
                 <Link to={to} className={styles.title}>
                   {currentPath.title}
                 </Link>

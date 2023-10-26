@@ -29,7 +29,6 @@ import ButtonCustom from "../../components/button-custom/button-custom.component
 import { buttonStyleTypes } from "../../components/button-custom/button-custom.utils";
 import QuantitySelector from "../../components/quantity-selector/quantity-selector.component";
 import SectionTitle from "../../components/section-title/section-title.component";
-import uniqid from "uniqid";
 import EmptyBlock from "../../components/empty-block/empty-block.component";
 
 function CartPage({
@@ -65,7 +64,7 @@ function CartPage({
             <>
               <div className={styles.itemList}>
                 {cartItems.map((item) => (
-                  <div key={uniqid()} className={styles.item}>
+                  <div key={item.id} className={styles.item}>
                     <div className={styles.itemImage}>
                       <Link to={`/shop/product-details/${item.alias}`}>
                         <img

@@ -24,7 +24,6 @@ import HeaderIconDropdown from "../header-icon-dropdown/header-icon-dropdown.com
 import ButtonCustom from "../button-custom/button-custom.component";
 import { buttonStyleTypes } from "../button-custom/button-custom.utils";
 import QuantitySelector from "../quantity-selector/quantity-selector.component";
-import uniqid from "uniqid";
 
 function CartDropdown({
   cartItems,
@@ -52,7 +51,7 @@ function CartDropdown({
 
           <div className={styles.itemList}>
             {cartItems.map((item) => (
-              <div key={uniqid()} className={styles.item}>
+              <div key={item.id} className={styles.item}>
                 <div className={styles.itemImageContainer}>
                   <Link to={`/shop/product-details/${item.alias}`}>
                     <img
