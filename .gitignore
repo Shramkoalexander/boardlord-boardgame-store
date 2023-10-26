@@ -26,3 +26,4 @@ yarn-error.log*
 TODO.md
 vs-code-workspace.code-workspace
 .firebase/hosting.YnVpbGQ.cache
+.firebase
